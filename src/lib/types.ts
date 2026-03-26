@@ -1,4 +1,4 @@
-import { Attendee } from "@prisma/client"
+import { Attendee, User, Webinar } from "@prisma/client"
 
 export type ValidationErrors = Record<string,string>
 
@@ -90,7 +90,10 @@ export type AttendanceData = {
     users: Attendee[]
 }
 
-
+// types.ts (or wherever your Webinar type is defined)
+export type WebinarWithPresenter = Webinar & {
+    presenter: User
+}
 
 
 
