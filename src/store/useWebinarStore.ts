@@ -1,5 +1,5 @@
 
-import { validateAdditionalInfo, validateBasicInfo, validateCTA, ValidationErrors,  } from '@/lib/types'
+import { validateAdditionalInfo, validateBasicInfo, validateCTA, ValidationErrors, } from '@/lib/types'
 import { CtaTypeEnum } from '@prisma/client'
 import { create } from 'zustand'
 
@@ -96,9 +96,9 @@ type WebinarStore = {
         field: K,
         value: WebinarFormState['additionalInfo'][K]
     ) => void
-    
-    addTag: (tag:string) => void
-    removeTag: (tag:string) => void
+
+    addTag: (tag: string) => void
+    removeTag: (tag: string) => void
 
     validateStep: (stepId: keyof WebinarFormState) => boolean
 
@@ -107,7 +107,7 @@ type WebinarStore = {
     resetForm: () => void
 }
 
-export const useWebinarStore = create<WebinarStore>((set,get) => ({
+export const useWebinarStore = create<WebinarStore>((set, get) => ({
     isModalOpen: false,
     isComplete: false,
     isSubmitting: false,

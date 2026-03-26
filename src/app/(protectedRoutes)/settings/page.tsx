@@ -1,4 +1,5 @@
 import { onAuthenticateUser } from "@/actions/auth"
+import { getStripeOAuthLink } from "@/lib/stripe/utils"
 
 import { LucideAlertCircle, LucideArrowRight, LucideCheckCircle2 } from "lucide-react"
 import Link from "next/link"
@@ -6,16 +7,18 @@ import { redirect } from "next/navigation"
 
 type Props = {}
 
-const page = async(props: Props) => {
+const page = async (props: Props) => {
 
-    const userExist  = await onAuthenticateUser()
+    const userExist = await onAuthenticateUser()
 
-    if(!userExist.user){
+    if (!userExist.user) {
         redirect("/sign-in")
     }
     const isConnected = !!userExist?.user?.stripeConnectId
 
-    
+    const stripeLink = getStripeOAuthLink('api/stripe-connect', userExist.user.id)
+
+
 
     return (
         <div className="w-full mx-auto py-8 px-4">
@@ -38,10 +41,10 @@ const page = async(props: Props) => {
                     </div>
                     <div>
                         <h2 className="text-xl font-semibold text-primary">
-                                Razorpay Connect
+                            Stripe Connect
                         </h2>
                         <p className="text-muted-foreground text-sm">
-                            Connect your Razorpay account to start accepting payments
+                            Connect your Stripe account to start accepting payments
                         </p>
                     </div>
                 </div>
@@ -55,13 +58,13 @@ const page = async(props: Props) => {
                         <div>
                             <p className="font-medium">
                                 {isConnected
-                                    ? 'Your Razorpay account is connected'
-                                    : 'Your Razorpay account is not connected yet'}
+                                    ? 'Your Stripe account is connected'
+                                    : 'Your Stripe account is not connected yet'}
                             </p>
                             <p className="text-sm text-muted-foreground mt-1">
                                 {isConnected
                                     ? 'You can now accept payments through your application'
-                                    : 'Connect your Razorpay account to start processing payments and managing subscriptions'}
+                                    : 'Connect your Stripe account to start processing payments and managing subscriptions'}
                             </p>
                         </div>
                     </div>
@@ -70,24 +73,24 @@ const page = async(props: Props) => {
                     <div className="text-sm text-muted-foreground">
                         {isConnected
                             ? 'You can reconnect anytime if needed'
-                            : "You'll be redirected to Razorpay to complete the connection"}
+                            : "You'll be redirected to Stripe to complete the connection"}
                     </div>
                     {/* Todo Add the Stripe Link */}
                     <Link
-                        href={`#`}
+                        href={stripeLink}
                         className={`px-5 py-2.5 rounded-md font-medium text-sm flex items-center gap-2 transition-colors ${isConnected
-                                ? 'bg-muted hover:bg-muted/80 text-foreground'
-                                : 'bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white'
+                            ? 'bg-muted hover:bg-muted/80 text-foreground'
+                            : 'bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white'
                             }`}
                     >
-                        {isConnected ? 'Reconnect' : 'Connect with Razorpay'}
+                        {isConnected ? 'Reconnect' : 'Connect with Stripe'}
                         <LucideArrowRight size={16} />
                     </Link>
                 </div>
                 {!isConnected && (
                     <div className="mt-6 pt-6 border-t border-border">
                         <h3 className="text-sm font-medium mb-2">
-                            Why connect with Razorpay?
+                            Why connect with Stripe?
                         </h3>
                         <ul className="text-sm text-muted-foreground space-y-2">
                             <li className="flex items-center gap-2">

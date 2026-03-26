@@ -48,13 +48,13 @@ model User {
   email        String       @unique
   profileImage String
   webinars     Webinar[]    @relation("PresenterWebinars")
-  razorpayContactId  String? @db.VarChar(255)
-  razorpayLinkedAccount String? @db.VarChar(255) 
+  stripeConnectId String?   @db.VarChar(255) 
   lastLoginAt  DateTime?
   createdAt    DateTime     @default(now())
   updatedAt    DateTime     @updatedAt
   deletedAt    DateTime?
   subscription Boolean @default(false)
+  stripeCustomerId String? @db.VarChar(255)
 
   @@index([email])
   @@index([clerkId])
@@ -79,10 +79,9 @@ model Webinar {
   couponEnabled Boolean           @default(false)
   couponExpiry  DateTime?
   lockChat      Boolean           @default(false)
-  razorpayPlanId  String?         @db.VarChar(255)
-  razorpayItemId  String?         @db.VarChar(255)
-  price           Int? 
+  stripeProductId String?         @db.VarChar(255)
   aiAgentId     String?           @db.Uuid
+  priceId         String? 
   recordingUrl  String?
   thumbnail     String?
   createdAt     DateTime          @default(now())
@@ -127,31 +126,3 @@ model Attendance {
 }
 
 
-model Subscription {
-  id                    String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  userId                String             @db.Uuid
-  razorpaySubscriptionId String           @unique @db.VarChar(255)
-  razorpayPlanId         String           @db.VarChar(255)
-  status                SubscriptionStatus @default(ACTIVE)
-  currentPeriodStart    DateTime
-  currentPeriodEnd      DateTime
-  createdAt             DateTime           @default(now())
-  updatedAt             DateTime           @updatedAt
-
-  @@index([userId])
-  @@index([razorpaySubscriptionId])
-}
-
-enum PaymentStatus {
-  PENDING
-  CAPTURED
-  FAILED
-  REFUNDED
-}
-
-enum SubscriptionStatus {
-  ACTIVE
-  CANCELLED
-  EXPIRED
-  PAUSED
-}

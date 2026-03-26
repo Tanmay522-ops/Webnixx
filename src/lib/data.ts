@@ -89,3 +89,5 @@ export const potentialCustomer = [
     },
 ];
 
+
+export const subscriptionPriceId = "price_1TE8PW4Js8kIVRrmrSYlNta6"

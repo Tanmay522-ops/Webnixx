@@ -8,14 +8,19 @@ import React from 'react'
 import PurpleIcon from '../PurpleIcon'
 import LightningIcon from '@/icons/LightningIcon'
 import CreateWebinarButton from '../CreateWebinarButton'
+import Stripe from 'stripe'
+import StripeElements from '../Stripe/Element'
+import SubscriptionModal from '../SubscriptionModal'
+
 
 
 type Props = {
     user: User
+    stripeProducts:Stripe.Product[] | []
 
 }
 
-const Header = ({user}:Props) => {
+const Header = ({user,stripeProducts}:Props) => {
     const pathname = usePathname()
     const router = useRouter()
 
@@ -46,7 +51,13 @@ const Header = ({user}:Props) => {
                to create a webinar */}
                {/* we dont have stripe for now so for now only we go to build button simply  */}
 
-               <CreateWebinarButton/>
+              {user.subscription ? (
+                  <CreateWebinarButton stripeProducts={stripeProducts} />
+              ) : (
+                  <StripeElements>
+                      <SubscriptionModal user={user} />
+                  </StripeElements>
+              )}
 
           </div>
       </div>

@@ -50,9 +50,10 @@ function DialogOverlay({
 function DialogContent({
   className,
   children,
+  isHideCloseButton = false,
   showCloseButton = true,
   ...props
-}: React.ComponentProps<typeof DialogPrimitive.Content> & {
+}: { isHideCloseButton?: boolean} & React.ComponentProps<typeof DialogPrimitive.Content> & {
   showCloseButton?: boolean
 }) {
   return (
@@ -67,7 +68,7 @@ function DialogContent({
         {...props}
       >
         {children}
-        {showCloseButton && (
+        {isHideCloseButton && (
           <DialogPrimitive.Close data-slot="dialog-close" asChild>
             <Button
               variant="ghost"
