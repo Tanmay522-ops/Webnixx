@@ -5,6 +5,7 @@ import { onAuthenticateUser } from "./auth"
 import Stripe from "stripe"
 import { prismaClient } from "@/lib/prismaClient"
 import { subscriptionPriceId } from "@/lib/data"
+import { changeAttendanceType } from "./attendance"
 
 export const getAllProductFromStripe = async()=>{
     try {
@@ -26,7 +27,7 @@ export const getAllProductFromStripe = async()=>{
         }
 
         const products = await stripe.products.list(
-            {},
+            {},  // fetch all the products without any filter
             {
                 stripeAccount:currentUser.user.stripeConnectId
             }
@@ -60,6 +61,7 @@ export const onGetStripeClientSecret = async (
     if (existingCustomers.data.length > 0) {
       customer = existingCustomers.data[0]
     } else {
+      // create a new customer if one doesn't exist
       customer = await stripe.customers.create({
         email: email,
         metadata: {
@@ -117,3 +119,50 @@ export const updateSubscription = async (subscription: Stripe.Subscription) => {
 }
 
 
+export const createCheckoutLink = async (
+  priceId: string,
+  stripeId: string,
+  attendeeId: string,
+  webinarId: string,
+  bookCall: boolean = false
+) => {
+  try {
+    const session = await stripe.checkout.sessions.create(
+      {
+        line_items: [
+          {
+            price: priceId,
+            quantity: 1,
+          },
+        ],
+        mode: 'payment',
+        success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/`,
+        cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/`,
+        metadata: {
+          attendeeId: attendeeId,
+          webinarId: webinarId,
+        },
+      },
+      {
+        stripeAccount: stripeId,
+      }
+    )
+    if (bookCall) {
+      await changeAttendanceType(attendeeId, webinarId, 'ADDED_TO_CART')
+    }
+
+    return {
+      sessionUrl: session.url,
+      status: 200,
+      success: true,
+    }
+
+  } catch (error) {
+    console.log('Error creating checkout link', error)
+    return {
+      error: 'Error creating checkout link',
+      status: 500,
+      success: false,
+    }
+  }
+}

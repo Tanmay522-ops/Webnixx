@@ -17,7 +17,7 @@ import SubscriptionModal from '../SubscriptionModal'
 type Props = {
     user: User
     stripeProducts:Stripe.Product[] | []
-
+ 
 }
 
 const Header = ({user,stripeProducts}:Props) => {

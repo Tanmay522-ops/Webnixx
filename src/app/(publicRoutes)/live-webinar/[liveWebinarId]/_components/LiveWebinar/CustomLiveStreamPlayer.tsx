@@ -28,14 +28,18 @@ const CustomLivestreamPlayer = ({
         if (!client) return
         const myCall = client.call(callType, callId)
         setCall(myCall)
-        myCall.join().catch((e) => {
+        myCall.join({ create: true })
+            .then(() => myCall.goLive())
+        .catch((e) => {
             console.error('Failed to join call', e)
         })
 
         return () => {
-            myCall.leave().catch((e) => {
-                console.error('Failed to leave call', e)
-            })
+            myCall.stopLive()              // ← stop live on cleanup
+                .then(() => myCall.leave())
+                .catch((e) => {
+                    console.error('Failed to leave call', e)
+                })
             setCall(undefined)
         }
     }, [client, callId, callType])

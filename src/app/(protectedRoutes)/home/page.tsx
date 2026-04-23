@@ -23,7 +23,7 @@ const Pages = (props: Props) => {
           <FeatureCard
             Icon={<Upload className="w-10 h-10" />}
             heading="Browse or drag a pre-recorded webinar file"
-            link="#"
+            link="/home"
           />
           <FeatureCard
             Icon={<Webcam className="w-10 h-10" />}

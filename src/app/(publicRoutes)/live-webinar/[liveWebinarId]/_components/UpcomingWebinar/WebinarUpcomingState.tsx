@@ -12,7 +12,10 @@ import { changeWebinarStatus } from '@/actions/webinar';
 import { toast } from 'sonner';
 import { format } from 'date-fns';
 
-type Props = { webinar: Webinar; currentUser: User | null }
+type Props = {
+    webinar: Webinar;
+    currentUser: User | null
+}
 
 const WebinarUpcomingState = ({ webinar, currentUser }: Props) => {
     const [loading, setLoading] = useState(false)
@@ -64,31 +67,31 @@ const WebinarUpcomingState = ({ webinar, currentUser }: Props) => {
                         webinarId={webinar.id}
                         webinarStatus="SCHEDULED"
                     />
-                    
+
                 ) : webinar?.webinarStatus === WebinarStatusEnum.WAITING_ROOM ? (
-                <>
-                    {currentUser?.id === webinar?.presenterId ? (
-                        <Button
-                            className="w-full max-w-[300px] font-semibold"
-                            onClick={handleStartWebinar}
-                            disabled={loading}
-                        >
-                            {loading ? (
-                                <>
-                                    <Loader2 className="animate-spin mr-2" />
-                                    Starting...
-                                </>
-                            ) : (
-                                'Start Webinar'
-                            )}
-                        </Button>
-                    ) : (
-                        <WaitListComponent
-                        webinarId={webinar.id}
-                        webinarStatus='WAITING_ROOM'
-                        />
-                    )}
-                </>
+                    <>
+                        {currentUser?.id === webinar?.presenterId ? (
+                            <Button
+                                className="w-full max-w-[300px] font-semibold"
+                                onClick={handleStartWebinar}
+                                disabled={loading}
+                            >
+                                {loading ? (
+                                    <>
+                                        <Loader2 className="animate-spin mr-2" />
+                                        Starting...
+                                    </>
+                                ) : (
+                                    'Start Webinar'
+                                )}
+                            </Button>
+                        ) : (
+                            <WaitListComponent
+                                webinarId={webinar.id}
+                                webinarStatus='WAITING_ROOM'
+                            />
+                        )}
+                    </>
                 ) : webinar?.webinarStatus === WebinarStatusEnum.LIVE ? (
                     <WaitListComponent
                         webinarId={webinar.id}
@@ -100,7 +103,7 @@ const WebinarUpcomingState = ({ webinar, currentUser }: Props) => {
                     </p>
                 ) : (
                     <Button>Ended</Button>
-                    
+
                 )}
             </div>
             <div className="text-center space-y-4">

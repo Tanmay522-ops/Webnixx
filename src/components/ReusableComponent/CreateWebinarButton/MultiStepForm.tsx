@@ -107,7 +107,7 @@ const MultiStepForm = ({steps,onComplete}:Props) => {
                           backgroundColor:
                             isCurrent || isCompleted
                               ? 'rgb(147, 51, 234)' // Purple-600
-                              : 'rgb(31, 41, 55)',  // Gray-800
+                              : 'rgb(31, 41, 55)',  // Gray-800           
                           scale: [isCurrent && !isCompleted ? 0.8 : 1, 1],
                           transition: { duration: 0.3 },
                         }}

@@ -1,3 +1,5 @@
+// Inside this route.ts we have a GET endpoint and this essentially handles 
+// auth callbacks from stripe connect
 import { prismaClient } from "@/lib/prismaClient";
 import { stripe } from "@/lib/stripe";
 import { NextRequest, NextResponse } from "next/server";

@@ -24,6 +24,8 @@ const SubscriptionModal =  ({ user }: Props) => {
            if (!stripe || !elements) {
                return toast.error("Stripe is not Initialzed")
            }
+        //  you will create an intent and based on that intent 
+        // you will accept the payment 
            const intent = await onGetStripeClientSecret(user.email, user.id)
 
            if(!intent?.secret){

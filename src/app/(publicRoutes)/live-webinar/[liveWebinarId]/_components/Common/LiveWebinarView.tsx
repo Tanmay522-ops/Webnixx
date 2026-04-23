@@ -1,5 +1,4 @@
 "use client"
-
 import { MessageSquare, Users } from 'lucide-react'
 import { ParticipantView, useCallStateHooks } from "@stream-io/video-react-sdk";
 import React, { useEffect, useState } from 'react'
@@ -34,7 +33,7 @@ const LiveWebinarView = ({
     const viewerCount = useParticipantCount();
     const [chatClient, setChatClient] = useState<StreamChat | null>(null)
     const [channel, setChannel] = useState<any>(null)
-    const [dialogOpen, setDialogOpen] = useState(false)
+    const [dialogOpen, setDialogOpen] = useState(true)
     const hostParticipant = participants.length > 0 ? participants[0] : null
 
 

@@ -112,7 +112,7 @@ export const useWebinarStore = create<WebinarStore>((set, get) => ({
     isComplete: false,
     isSubmitting: false,
     formData: initialState,
-    validation: initialValidation,
+    validation: initialValidation ,
 
     setModalOpen: (open: boolean) => set({ isModalOpen: open }),
     setComplete: (complete: boolean) => set({ isComplete: complete }),
