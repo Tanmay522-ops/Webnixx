@@ -1,7 +1,7 @@
 "use client"
 import { Loader2, MessageSquare, Users } from 'lucide-react'
-import { ParticipantView, useCallStateHooks } from "@stream-io/video-react-sdk";
-import React, { useEffect, useState } from 'react'
+import { ParticipantView, useCallStateHooks, type Call} from "@stream-io/video-react-sdk";
+import React, { use, useEffect, useState } from 'react'
 import { WebinarWithPresenter } from '@/lib/types';
 import {StreamChat} from 'stream-chat'
 import { Button } from '@/components/ui/button';
@@ -13,6 +13,7 @@ import CTADialogBox from './CTADialogBox';
 import { changeWebinarStatus } from '@/actions/webinar';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
+import ObsDialogBox from './ObsDialogBox';
 
 type Props = {
     showChat: boolean
@@ -21,6 +22,7 @@ type Props = {
     isHost?: boolean
     username: string
     userId: string
+    call: Call,
     userToken: string
 }
 
@@ -32,6 +34,7 @@ const LiveWebinarView = ({
     username,
     userId,
     userToken,
+    call,
 }: Props) => {
     const { useParticipantCount,useParticipants } = useCallStateHooks();
     const participants = useParticipants()
@@ -40,7 +43,7 @@ const LiveWebinarView = ({
     const [channel, setChannel] = useState<any>(null)
     const [dialogOpen, setDialogOpen] = useState(true)
     const[loading,setLoading] = useState(false)
-
+    const[obsDialogBox, setObsDialogBox] = useState(false)
 
     const router = useRouter()
     const hostParticipant = participants.length > 0 ? participants[0] : null
@@ -48,13 +51,19 @@ const LiveWebinarView = ({
     const handleEndStream = async () => {
         setLoading(true);
         try {
+            call.stopLive({
+                continue_recording: false,
+            })
+            call.endCall()
+
+
             const res = await changeWebinarStatus(webinar.id, "ENDED");
             if (!res.success) {
                 throw new Error(res.message);
             }
 
-            router.refresh();
             toast.success("Webinar ended successfully");
+            router.push("/")
         } catch (error) {
             console.error("Error ending stream", error);
             toast.error("Error ending stream");
@@ -62,6 +71,17 @@ const LiveWebinarView = ({
             setLoading(false);
         }
     };
+
+    const handleStopRecording = async () => {
+        try {
+            await call.stopRecording();
+            toast.success("Recording stopped");
+        } catch (error) {
+            console.error("Error stopping recording", error);
+            toast.error("Failed to stop recording");
+        }
+    };
+
     const handleCTAButtonClick = async () => {
         if (!channel) return
         console.log('CTA button clicked', channel)
@@ -69,6 +89,7 @@ const LiveWebinarView = ({
             type: 'open_cta_dialog',
         })
     }
+
     useEffect(() => {
         const initChat = async () => {
             const client = StreamChat.getInstance(
@@ -114,6 +135,40 @@ const LiveWebinarView = ({
             })
         }
     }, [chatClient, channel, isHost])
+
+    useEffect(()=>{
+        call.on("call.rtmp_broadcast_started",()=>{
+            toast.success("Webinar Started Successfully")
+            router.refresh()
+        })
+
+        call.on("call.rtmp_broadcast_failed",()=>{
+            toast.error("Strem failed to start. Please try again.")
+        })
+    },[call])
+
+    useEffect(() => {
+        if (!isHost) return;
+
+        const startRecording = async () => {
+            try {
+                await call.startRecording();
+                toast.success("Recording started");
+            } catch (error) {
+                console.error("Error starting recording", error);
+                toast.error("Failed to start recording");
+            }
+        };
+
+        // Start recording when the call goes live
+        call.on("call.live_started", () => {
+            startRecording();
+        });
+
+        return () => {
+            call.off("call.live_started", startRecording);
+        };
+    }, [call, isHost]);
 
     if (!chatClient || !channel) return null
 
@@ -183,6 +238,14 @@ const LiveWebinarView = ({
                         </div>
                         {isHost && (
                             <div className="flex items-center space-x-1">
+                                <Button
+                                    onClick={() => setObsDialogOpen(true)}
+                                    variant="outline"
+                                    className="mr-2"
+                                >
+                                    Get OBS Creds
+                                </Button>
+
                                 <Button onClick={handleEndStream} disabled={loading}>
                                     {loading ? (
                                         <>
@@ -193,6 +256,11 @@ const LiveWebinarView = ({
                                         "End Stream"
                                     )}
                                 </Button>
+
+                                <Button onClick={handleStopRecording} variant="outline">
+                                    Stop Recording
+                                </Button>
+
 
                                 <Button onClick={handleCTAButtonClick}>
                                     {webinar.ctaType === CtaTypeEnum.BOOK_A_CALL
@@ -207,7 +275,7 @@ const LiveWebinarView = ({
                     <Chat client={chatClient}>
                         <Channel channel={channel}>
                             <div className="w-72 bg-card border border-border rounded-lg overflow-hidden flex flex-col">
-                                <div className="py-2 px-3 border-b border-border font-medium flex items-center justify-between">
+                                <div className="py-2 text-primary px-3 border-b border-border font-medium flex items-center justify-between">
                                     <span>Chat</span>
                                     <span className="text-xs bg-muted px-2 py-0.5 rounded-full">
                                         {viewerCount} viewers
@@ -231,6 +299,15 @@ const LiveWebinarView = ({
                     onOpenChange={setDialogOpen}
                     webinar={webinar}
                     userId={userId}
+                />
+            )}
+
+            {obsDialogBox && (
+                <ObsDialogBox
+                    open={obsDialogBox}
+                    onOpenChange={setObsDialogBox}
+                    rtmpURL={`rtmps://ingress.stream-io-video.com:443/${process.env.NEXT_PUBLIC_STREAM_API_KEY}.livestream.${webinar.id}`}
+                    streamKey={userToken}
                 />
             )}
         </div>
