@@ -26,20 +26,18 @@ const CustomLivestreamPlayer = ({
 
     useEffect(() => {
         if (!client) return
+
         const myCall = client.call(callType, callId)
         setCall(myCall)
-        myCall.join({ create: true })
-            .then(() => myCall.goLive())
-        .catch((e) => {
-            console.error('Failed to join call', e)
-        })
+        myCall.join({ create: true }).then(
+            () => setCall(myCall),
+            () => console.error("Failed to join the call"),
+        )
 
         return () => {
-            myCall.stopLive()              // ← stop live on cleanup
-                .then(() => myCall.leave())
-                .catch((e) => {
-                    console.error('Failed to leave call', e)
-                })
+        //    myCall.leave().catch((e)=>{
+        //     console.error("Failed to leave call",e)
+        //    })
             setCall(undefined)
         }
     }, [client, callId, callType])
@@ -53,9 +51,10 @@ const CustomLivestreamPlayer = ({
                 setShowChat={setShowChat}
                 isHost={true}
                 username={username}
-                userId={process.env.NEXT_PUBLIC_STREAM_USER_ID!}
+                userId={webinar.presenter.id}
                 userToken={token}
                 webinar={webinar}
+                call={call}
             />
         </StreamCall>
     )

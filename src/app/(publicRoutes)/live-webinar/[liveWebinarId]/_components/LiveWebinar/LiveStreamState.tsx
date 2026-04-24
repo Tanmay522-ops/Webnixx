@@ -6,27 +6,60 @@ import {
 } from '@stream-io/video-react-sdk'
 import { WebinarWithPresenter } from '@/lib/types'
 import { User } from '@prisma/client'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import CustomLivestreamPlayer from './CustomLiveStreamPlayer'
+import { getTokenForHost } from '@/actions/streamIo'
 
 type Props = {
     apiKey: string
-    token: string
     callId: string
     webinar: WebinarWithPresenter
     user: User
 }
 
-const hostUser: StreamUser = {id:process.env.NEXT_PUBLIC_STREAM_USER_ID!}
-const LiveStreamState = ({ apiKey, token, callId, webinar, user }: Props) => {
-    const client = new StreamVideoClient({apiKey,user:hostUser,token})
+const LiveStreamState = ({ apiKey, callId, webinar, user }: Props) => {
+    const [hostToken,setHostToken] = useState<string | null>(null)
+    const [client, setClient] = useState<StreamVideoClient | null>(null)
+    useEffect(() => {
+        const init = async () => {
+            try {
+                const token = await getTokenForHost({
+                    userId: webinar.presenterId,
+                    username: webinar.presenter.name,
+                    profilePic: webinar.presenter.profileImage
+                })
+
+                const hostUser: StreamUser = {
+                    id: webinar.presenterId,
+                    name: webinar.presenter.name,
+                    image: webinar.presenter.profileImage,
+                }
+
+                const streamClient = new StreamVideoClient({
+                    apiKey,
+                    user: hostUser,
+                    token,
+                })
+                setHostToken(token)
+                setClient(streamClient)
+
+            } catch (error) { 
+                console.error("Error initializing Stream client:", error)
+            }
+        }
+
+        init()
+    }, [apiKey, webinar])
+
+    if(!client || !hostToken) return null
+
     return <StreamVideo client={client}>
                 <CustomLivestreamPlayer
                 callId={callId}
                 callType='livestream'
                 webinar = {webinar}
                 username={user.name}
-                token = {token}
+                token = {hostToken}
                 />
     </StreamVideo>
 }
