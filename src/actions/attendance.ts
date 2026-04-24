@@ -20,6 +20,7 @@ export const getWebinarAttendance = async (
                 id: true,
                 ctaType: true,
                 tags: true,
+                presenter: true,
                 _count: {
                     select: {
                         attendances: true,
@@ -111,17 +112,28 @@ export const getWebinarAttendance = async (
                         },
                     })
 
-                    result[type].users = attendances.map((attendance) => attendance.user)
+                    // TODO: fix this
+                    result[type].users = attendances.map((attendance) => ({
+                        id: attendance.user.id,
+                        name: attendance.user.name,
+                        email: attendance.user.email,
+                        attendedAt: attendance.joinedAt,
+                        stripeConnectId: null,
+                        callStatus: attendance.user.callStatus,
+                        createdAt: attendance.user.createdAt,
+                        updatedAt: attendance.user.updatedAt,
+                    }));
 
                 }
             }
         }
-        // revalidatePath(`/webinars/${webinarId}/pipelines`)
+
         return {
             success: true,
             data: result,
             ctaType: webinar.ctaType,
             webinarTags: webinar.tags || [],
+            presenter: webinar.presenter,
         }
 
     } catch (error) {

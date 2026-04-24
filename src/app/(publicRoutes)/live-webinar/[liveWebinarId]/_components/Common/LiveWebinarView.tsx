@@ -1,5 +1,5 @@
 "use client"
-import { MessageSquare, Users } from 'lucide-react'
+import { Loader2, MessageSquare, Users } from 'lucide-react'
 import { ParticipantView, useCallStateHooks } from "@stream-io/video-react-sdk";
 import React, { useEffect, useState } from 'react'
 import { WebinarWithPresenter } from '@/lib/types';
@@ -9,6 +9,11 @@ import { CtaTypeEnum } from '@prisma/client';
 import 'stream-chat-react/dist/css/v2/index.css'
 import { Chat, Channel, MessageList, MessageInput } from 'stream-chat-react'
 import CTADialogBox from './CTADialogBox';
+
+import { changeWebinarStatus } from '@/actions/webinar';
+import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
+
 type Props = {
     showChat: boolean
     setShowChat: (show: boolean) => void
@@ -34,9 +39,29 @@ const LiveWebinarView = ({
     const [chatClient, setChatClient] = useState<StreamChat | null>(null)
     const [channel, setChannel] = useState<any>(null)
     const [dialogOpen, setDialogOpen] = useState(true)
+    const[loading,setLoading] = useState(false)
+
+
+    const router = useRouter()
     const hostParticipant = participants.length > 0 ? participants[0] : null
 
+    const handleEndStream = async () => {
+        setLoading(true);
+        try {
+            const res = await changeWebinarStatus(webinar.id, "ENDED");
+            if (!res.success) {
+                throw new Error(res.message);
+            }
 
+            router.refresh();
+            toast.success("Webinar ended successfully");
+        } catch (error) {
+            console.error("Error ending stream", error);
+            toast.error("Error ending stream");
+        } finally {
+            setLoading(false);
+        }
+    };
     const handleCTAButtonClick = async () => {
         if (!channel) return
         console.log('CTA button clicked', channel)
@@ -158,10 +183,21 @@ const LiveWebinarView = ({
                         </div>
                         {isHost && (
                             <div className="flex items-center space-x-1">
+                                <Button onClick={handleEndStream} disabled={loading}>
+                                    {loading ? (
+                                        <>
+                                            <Loader2 className="animate-spin mr-2" />
+                                            Loading...
+                                        </>
+                                    ) : (
+                                        "End Stream"
+                                    )}
+                                </Button>
+
                                 <Button onClick={handleCTAButtonClick}>
                                     {webinar.ctaType === CtaTypeEnum.BOOK_A_CALL
-                                        ? 'Book a Call'
-                                        : 'Buy Now'}
+                                        ? "Book a call"
+                                        : "Buy Now"}
                                 </Button>
                             </div>
                         )}
