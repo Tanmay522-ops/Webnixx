@@ -1,9 +1,9 @@
 "use client"
 import { Loader2, MessageSquare, Users } from 'lucide-react'
-import { ParticipantView, useCallStateHooks, type Call} from "@stream-io/video-react-sdk";
+import { ParticipantView, useCallStateHooks, type Call } from "@stream-io/video-react-sdk";
 import React, { use, useEffect, useState } from 'react'
 import { WebinarWithPresenter } from '@/lib/types';
-import {StreamChat} from 'stream-chat'
+import { StreamChat } from 'stream-chat'
 import { Button } from '@/components/ui/button';
 import { CtaTypeEnum } from '@prisma/client';
 import 'stream-chat-react/dist/css/v2/index.css'
@@ -36,14 +36,14 @@ const LiveWebinarView = ({
     userToken,
     call,
 }: Props) => {
-    const { useParticipantCount,useParticipants } = useCallStateHooks();
+    const { useParticipantCount, useParticipants } = useCallStateHooks();
     const participants = useParticipants()
     const viewerCount = useParticipantCount();
     const [chatClient, setChatClient] = useState<StreamChat | null>(null)
     const [channel, setChannel] = useState<any>(null)
     const [dialogOpen, setDialogOpen] = useState(true)
-    const[loading,setLoading] = useState(false)
-    const[obsDialogBox, setObsDialogBox] = useState(false)
+    const [loading, setLoading] = useState(false)
+    const [obsDialogBox, setObsDialogBox] = useState(false)
 
     const router = useRouter()
     const hostParticipant = participants.length > 0 ? participants[0] : null
@@ -130,22 +130,23 @@ const LiveWebinarView = ({
                 if (event.type === 'open_cta_dialog' && !isHost) {
                     setDialogOpen(true)
                 }
-
-                // console.log("New message:", event);
+                if (event.type === "start_live") {
+                    window.location.reload()
+                }
             })
         }
     }, [chatClient, channel, isHost])
 
-    useEffect(()=>{
-        call.on("call.rtmp_broadcast_started",()=>{
+    useEffect(() => {
+        call.on("call.rtmp_broadcast_started", () => {
             toast.success("Webinar Started Successfully")
             router.refresh()
         })
 
-        call.on("call.rtmp_broadcast_failed",()=>{
+        call.on("call.rtmp_broadcast_failed", () => {
             toast.error("Strem failed to start. Please try again.")
         })
-    },[call])
+    }, [call])
 
     useEffect(() => {
         if (!isHost) return;
@@ -193,8 +194,8 @@ const LiveWebinarView = ({
                     <button
                         onClick={() => setShowChat(!showChat)}
                         className={`px-3 py-1 rounded-full text-sm flex items-center space-x-1 ${showChat
-                                ? 'bg-accent-primary text-primary-foreground'
-                                : 'bg-muted/50'
+                            ? 'bg-accent-primary text-primary-foreground'
+                            : 'bg-muted/50'
                             }`}
                     >
                         <MessageSquare size={16} />
@@ -228,7 +229,7 @@ const LiveWebinarView = ({
                             <div className="absolute top-4 right-4 bg-background/80 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-medium">
                                 Host
                             </div>
-                        )}            
+                        )}
                     </div>
                     <div className="p-2 border-t border-border flex items-center justify-between py-2">
                         <div className="flex items-center space-x-2">
@@ -239,11 +240,23 @@ const LiveWebinarView = ({
                         {isHost && (
                             <div className="flex items-center space-x-1">
                                 <Button
-                                    onClick={() => setObsDialogOpen(true)}
+                                    onClick={() => setObsDialogBox(true)}
                                     variant="outline"
                                     className="mr-2"
                                 >
                                     Get OBS Creds
+                                </Button>
+
+                                <Button
+                                    onClick={async () => {
+                                        await channel.sendEvent({
+                                            type: 'start_live',
+                                        })
+                                    }}
+                                    variant="outline"
+                                    className="mr-2"
+                                >
+                                    Go Live
                                 </Button>
 
                                 <Button onClick={handleEndStream} disabled={loading}>

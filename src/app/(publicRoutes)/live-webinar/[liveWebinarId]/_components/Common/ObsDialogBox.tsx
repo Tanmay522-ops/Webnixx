@@ -59,6 +59,7 @@ const ObsDialogBox = ({ open, onOpenChange, rtmpURL, streamKey }: Props) => {
                                 value={streamKey}
                                 readOnly
                                 className="flex-1"
+                                type='password'
                             />
                             <Button
                                 variant="outline"

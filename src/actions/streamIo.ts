@@ -111,12 +111,12 @@ export const getStreamRecording = async (webinarId: string) => {
         const recordings = await call.listRecordings()
 
         if (!recordings || recordings.recordings.length === 0) {
-            throw new Error('No recordings found for this webinar')
+            return null
         }
 
         return recordings.recordings
     } catch (error) {
         console.error('Error fetching stream recordings:', error)
-        throw new Error('Failed to get stream recordings')
+        return null
     }
 }
