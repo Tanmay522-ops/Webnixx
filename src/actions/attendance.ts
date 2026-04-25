@@ -244,14 +244,19 @@ export const changeAttendanceType = async (
     attendedType: AttendedTypeEnum
 ) => {
     try {
-        const attendance = await prismaClient.attendance.update({
+        const attendance = await prismaClient.attendance.upsert({  // ✅ upsert instead of update
             where: {
                 attendeeId_webinarId: {
                     attendeeId,
                     webinarId,
                 },
             },
-            data: {
+            update: {
+                attendedType,
+            },
+            create: {
+                attendeeId,
+                webinarId,
                 attendedType,
             },
         })

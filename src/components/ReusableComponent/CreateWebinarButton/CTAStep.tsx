@@ -6,14 +6,19 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import { useWebinarStore } from "@/store/useWebinarStore";
 import { CtaTypeEnum } from "@prisma/client";
-import { Search, X } from "lucide-react";
+import { Loader2, Plus, Search, X } from "lucide-react";
 import { useState } from "react";
 import Stripe from "stripe";
+import { createProductInStripe } from "@/actions/stripe";
+import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 type Props = {
     stripeProducts: Stripe.Product[] | []
 }
-const CTAStep = ({stripeProducts}: Props) => {
+
+const CTAStep = ({ stripeProducts }: Props) => {
     const {
         formData,
         updateCTAField,
@@ -24,8 +29,13 @@ const CTAStep = ({stripeProducts}: Props) => {
 
     const { ctaLabel, tags, aiAgent, priceId, ctaType } = formData.cta;
     const [tagInput, setTagInput] = useState("")
-
+    const [showCreateForm, setShowCreateForm] = useState(false)
+    const [productName, setProductName] = useState('')
+    const [productPrice, setProductPrice] = useState('')
+    const [creating, setCreating] = useState(false)
     const errors = getStepValidationErrors("cta")
+
+    const router = useRouter()
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
@@ -39,13 +49,38 @@ const CTAStep = ({stripeProducts}: Props) => {
             setTagInput('')
         }
     }
+
     const handleSelectCTAType = (value: string) => {
         updateCTAField('ctaType', value as CtaTypeEnum)
     }
+
     const handleProductChange = (value: string) => {
         updateCTAField('priceId', value)
     }
 
+    const handleCreateProduct = async () => {
+        if (!productName || !productPrice) {
+            toast.error('Please enter product name and price')
+            return
+        }
+        setCreating(true)
+        try {
+            const res = await createProductInStripe(productName, Number(productPrice))
+            if (res.success) {
+                toast.success('Product created successfully!')
+                setShowCreateForm(false)
+                setProductName('')
+                setProductPrice('')
+                router.refresh()  // ✅ refetches from Stripe without closing dialog
+            } else {
+                toast.error(res.error || 'Failed to create product')
+            }
+        } catch (error) {
+            toast.error('Something went wrong')
+        } finally {
+            setCreating(false)
+        }
+    }
     return (
         <div className="space-y-6">
             <div className="space-y-2">
@@ -72,9 +107,9 @@ const CTAStep = ({stripeProducts}: Props) => {
                     <p className="text-sm text-red-400">{errors.ctaLabel}</p>
                 )}
             </div>
+
             <div className="space-y-2">
                 <Label htmlFor="tags">Tags</Label>
-
                 <Input
                     id="tags"
                     value={tagInput}
@@ -83,7 +118,6 @@ const CTAStep = ({stripeProducts}: Props) => {
                     placeholder="Add tags and press Enter"
                     className="bg-background/50 border border-input"
                 />
-
                 {tags && tags.length > 0 && (
                     <div className="flex flex-wrap gap-2 mt-2">
                         {tags.map((tag: string, index: number) => (
@@ -92,7 +126,6 @@ const CTAStep = ({stripeProducts}: Props) => {
                                 className="flex items-center gap-1 bg-gray-800 text-white px-3 py-1 rounded-md"
                             >
                                 {tag}
-
                                 <button
                                     onClick={() => removeTag(tag)}
                                     className="text-gray-400 hover:text-white"
@@ -104,12 +137,10 @@ const CTAStep = ({stripeProducts}: Props) => {
                     </div>
                 )}
             </div>
+
             <div className="space-y-2 w-full">
                 <Label>CTA Type</Label>
-                <Tabs
-                    defaultValue={CtaTypeEnum.BOOK_A_CALL}
-                    className="w-full"
-                >
+                <Tabs defaultValue={CtaTypeEnum.BOOK_A_CALL} className="w-full">
                     <TabsList className="w-full bg-transparent">
                         <TabsTrigger
                             value={CtaTypeEnum.BOOK_A_CALL}
@@ -128,44 +159,85 @@ const CTAStep = ({stripeProducts}: Props) => {
                     </TabsList>
                 </Tabs>
             </div>
-                {/* todo Agents */}
+
             <div className="space-y-2">
-                <Label>Attach an Product</Label>
+                {/* Label + Create button */}
+                <div className="flex items-center justify-between">
+                    <Label>Attach a Product</Label>
+                    <button
+                        type="button"
+                        onClick={() => setShowCreateForm(!showCreateForm)}
+                        className="text-xs text-blue-400 flex items-center gap-1 hover:text-blue-300"
+                    >
+                        <Plus className="h-3 w-3" />
+                        {showCreateForm ? 'Cancel' : 'Create new product'}
+                    </button>
+                </div>
+
+                {/* Create Product Form */}
+                {showCreateForm && (
+                    <div className="p-3 border border-input rounded-md space-y-2 bg-background/50">
+                        <Input
+                            placeholder="Product name (e.g. spotlight course)"
+                            value={productName}
+                            onChange={(e) => setProductName(e.target.value)}
+                            className="bg-background/50 border border-input"
+                        />
+                        <Input
+                            placeholder="Price in USD (e.g. 99)"
+                            type="number"
+                            value={productPrice}
+                            onChange={(e) => setProductPrice(e.target.value)}
+                            className="bg-background/50 border border-input"
+                        />
+                        <Button
+                            type="button"
+                            size="sm"
+                            onClick={handleCreateProduct}
+                            disabled={creating || !productName || !productPrice}
+                            className="w-full"
+                        >
+                            {creating ? (
+                                <><Loader2 className="mr-2 h-3 w-3 animate-spin" />Creating...</>
+                            ) : 'Create Product'}
+                        </Button>
+                    </div>
+                )}
+
+                {/* Product Selector */}
                 <div className="relative">
                     <div className="mb-2">
                         <div className="relative">
                             <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-500" />
                             <Input
-                                placeholder="Search agents"
+                                placeholder="Search products"
                                 className="pl-9 !bg-background/50 border border-input"
                             />
                         </div>
                     </div>
 
-                    <Select
-                        value={priceId}
-                        onValueChange={handleProductChange}
-                    >
+                    <Select value={priceId} onValueChange={handleProductChange}>
                         <SelectTrigger className="w-full !bg-background/50 border border-input">
-                            <SelectValue placeholder="Select an product" />
+                            <SelectValue placeholder="Select a product" />
                         </SelectTrigger>
                         <SelectContent className="bg-background border border-input max-h-48">
                             {stripeProducts?.length > 0 ? (
                                 stripeProducts.map((product) => (
                                     <SelectItem
                                         key={product.id}
-                                        value={product?.default_price?.toString() || ''}
+                                        value={
+                                            typeof product.default_price === 'string'
+                                                ? product.default_price
+                                                : (product.default_price as any)?.id || ''
+                                        }
                                         className="!bg-background/50 hover:!bg-white/10"
                                     >
                                         {product.name}
                                     </SelectItem>
                                 ))
                             ) : (
-                                <SelectItem
-                                    value="none"
-                                    disabled
-                                >
-                                    Create product in stripe
+                                <SelectItem value="none" disabled>
+                                    No products — create one above ↑
                                 </SelectItem>
                             )}
                         </SelectContent>

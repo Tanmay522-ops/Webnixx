@@ -18,6 +18,7 @@ const Layout = async ({ children }: Props) => {
     }
 
     const stripeProducts = await getAllProductFromStripe()
+    console.log("Stripe Products Result:", JSON.stringify(stripeProducts, null, 2))
 
     return (
         <div className="flex w-full min-h-screen">

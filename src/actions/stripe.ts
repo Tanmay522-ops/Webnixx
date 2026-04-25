@@ -7,6 +7,42 @@ import { prismaClient } from "@/lib/prismaClient"
 import { subscriptionPriceId } from "@/lib/data"
 import { changeAttendanceType } from "./attendance"
 
+
+
+export const createProductInStripe = async (name: string, amount: number) => {
+  try {
+    const currentUser = await onAuthenticateUser()
+    if (!currentUser.user?.stripeConnectId) {
+      return { error: "Stripe not connected", success: false }
+    }
+
+    const product = await stripe.products.create(
+      {
+        name,
+        default_price_data: {
+          currency: 'usd',
+          unit_amount: amount * 100,
+        },
+      },
+      { stripeAccount: currentUser.user.stripeConnectId }
+    )
+
+    // ✅ serialize to plain object
+    return {
+      product: {
+        id: product.id,
+        name: product.name,
+        default_price: product.default_price,
+        active: product.active,
+      },
+      success: true
+    }
+  } catch (error) {
+    console.error("Error creating product", error)
+    return { error: "Failed to create product", success: false }
+  }
+}
+
 export const getAllProductFromStripe = async()=>{
     try {
         const currentUser = await onAuthenticateUser()
@@ -27,7 +63,7 @@ export const getAllProductFromStripe = async()=>{
         }
 
         const products = await stripe.products.list(
-            {},  // fetch all the products without any filter
+            { expand: ['data.default_price'] }, // fetch all the products without any filter
             {
                 stripeAccount:currentUser.user.stripeConnectId
             }

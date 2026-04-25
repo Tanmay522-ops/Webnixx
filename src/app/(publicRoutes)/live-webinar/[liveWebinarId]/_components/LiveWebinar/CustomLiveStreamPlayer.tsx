@@ -29,7 +29,7 @@ const CustomLivestreamPlayer = ({
 
         const myCall = client.call(callType, callId)
         setCall(myCall)
-        myCall.join({ create: false }).then(
+        myCall.join({ create: true }).then(
             () => setCall(myCall),
             () => console.error("Failed to join the call"),
         )

@@ -270,11 +270,6 @@ const LiveWebinarView = ({
                                     )}
                                 </Button>
 
-                                <Button onClick={handleStopRecording} variant="outline">
-                                    Stop Recording
-                                </Button>
-
-
                                 <Button onClick={handleCTAButtonClick}>
                                     {webinar.ctaType === CtaTypeEnum.BOOK_A_CALL
                                         ? "Book a call"

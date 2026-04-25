@@ -28,6 +28,10 @@ const CTADialogBox = ({
     const[loading,setLoading] = useState(false)
 
     const handleClick = async () => {
+
+        console.log('priceId:', webinar.priceId)
+        console.log('stripeConnectId:', webinar.presenter.stripeConnectId)
+        setLoading(true) 
         try {
             if (webinar?.ctaType === 'BOOK_A_CALL') {
                 router.push(`/live-webinar/${webinar.id}/call?attendeeId=${userId}`)
@@ -47,7 +51,7 @@ const CTADialogBox = ({
                 if (!session.sessionUrl) {
                     throw new Error('Session ID not found in response')
                 }
-                window.open(session.sessionUrl, '_blank')
+                window.location.href = session.sessionUrl
             }
         } catch (error) { 
             console.error('Error creating checkout link', error)
