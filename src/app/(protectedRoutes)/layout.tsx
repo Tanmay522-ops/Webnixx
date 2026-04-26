@@ -4,10 +4,13 @@ import { onAuthenticateUser } from '@/actions/auth'
 import Sidebar from '@/components/ReusableComponent/LayoutComponents/Sidebar'
 import Header from '@/components/ReusableComponent/LayoutComponents/Header'
 import { getAllProductFromStripe } from '@/actions/stripe'
+import { getAllAssistants } from '@/actions/vapi'
+
 
 
 type Props = {
     children: React.ReactNode
+
 }
 
 const Layout = async ({ children }: Props) => {
@@ -18,7 +21,8 @@ const Layout = async ({ children }: Props) => {
     }
 
     const stripeProducts = await getAllProductFromStripe()
-    console.log("Stripe Products Result:", JSON.stringify(stripeProducts, null, 2))
+    const assistants = await getAllAssistants()
+    console.log(assistants)
 
     return (
         <div className="flex w-full min-h-screen">
@@ -27,7 +31,11 @@ const Layout = async ({ children }: Props) => {
 
             <div className="flex flex-col w-full h-screen overflow-auto px-4 scrollbar-hide container mx-auto">
                 {/* HEADER */}
-                <Header user={userExist.user} stripeProducts={stripeProducts.products || []}/>
+                <Header 
+                user={userExist.user} 
+                stripeProducts={stripeProducts.products || []}
+                assistants={assistants.data || []}
+                />
 
                 {/* MAIN */}
                <div className='flex-1 py-10'>

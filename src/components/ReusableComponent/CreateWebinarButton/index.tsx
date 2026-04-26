@@ -10,16 +10,18 @@ import CTAStep from './CTAStep';
 import AdditionalInfoStep from './AdditionalInfoStep';
 import Stripe from 'stripe';
 import SuccessStep from './SuccessStep';
+import { Assistant } from '@vapi-ai/server-sdk/api';
 
 type Props = {
-    stripeProducts:Stripe.Product[]|[]
+    stripeProducts:Stripe.Product[] | []
+    assistants: Assistant[] | []
 }
 
 // The Dialogue components need some state
 // so we can do we will create a use state here and then we can store the value and render those state inside the diolgue 
 // But i want to make this as global so for this  i want to set up a architecture around my application 
 // so i can  share a datalayer between all my components in my applications 
-const CreateWebinarButton = ({stripeProducts}: Props) => {
+const CreateWebinarButton = ({stripeProducts,assistants}: Props) => {
     const { isModalOpen, setModalOpen, isComplete, setComplete, resetForm } = useWebinarStore();
 
     const [webinarLink, setWebinarLink] = useState("")
@@ -37,7 +39,7 @@ const CreateWebinarButton = ({stripeProducts}: Props) => {
             description: 'Please Provide the end-point for your customer through your webinar',
             component: (
                 <CTAStep
-                    assistants={[]}
+                    assistants={assistants}
                     stripeProducts={stripeProducts}
                 />
             )
