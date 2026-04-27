@@ -206,9 +206,99 @@ const CTAStep = ({ stripeProducts , assistants}: Props) => {
                             </SelectContent>
                         </Select>
                     </div>
+
+                    {/* Label + Create button */}
+                    <div className="flex items-center justify-between">
+                        <Label>Attach a Product</Label>
+                        <button
+                            type="button"
+                            onClick={() => setShowCreateForm(!showCreateForm)}
+                            className="text-xs text-blue-400 flex items-center gap-1 hover:text-blue-300"
+                        >
+                            <Plus className="h-3 w-3" />
+                            {showCreateForm ? 'Cancel' : 'Create new product'}
+                        </button>
+                    </div>
+
+                    {/* Create Product Form */}
+                    {showCreateForm && (
+                        <div className="p-3 border border-input rounded-md space-y-2 bg-background/50">
+                            <Input
+                                placeholder="Product name (e.g. spotlight course)"
+                                value={productName}
+                                onChange={(e) => setProductName(e.target.value)}
+                                className="bg-background/50 border border-input"
+                            />
+                            <Input
+                                placeholder="Price in USD (e.g. 99)"
+                                type="number"
+                                value={productPrice}
+                                onChange={(e) => setProductPrice(e.target.value)}
+                                className="bg-background/50 border border-input"
+                            />
+                            <Button
+                                type="button"
+                                size="sm"
+                                onClick={handleCreateProduct}
+                                disabled={creating || !productName || !productPrice}
+                                className="w-full"
+                            >
+                                {creating ? (
+                                    <><Loader2 className="mr-2 h-3 w-3 animate-spin" />Creating...</>
+                                ) : 'Create Product'}
+                            </Button>
+                        </div>
+                    )}
+
+                    {/* Product Selector */}
+                    <div className="relative">
+                        <div className="mb-2">
+                            <div className="relative">
+                                <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-500" />
+                                <Input
+                                    placeholder="Search products"
+                                    className="pl-9 !bg-background/50 border border-input"
+                                />
+                            </div>
+                        </div>
+
+                        <Select value={priceId} onValueChange={handleProductChange}>
+                            <SelectTrigger className="w-full !bg-background/50 border border-input">
+                                <SelectValue placeholder="Select a product" />
+                            </SelectTrigger>
+                            <SelectContent className="bg-background border border-input max-h-48">
+                                {stripeProducts?.length > 0 ? (
+                                    stripeProducts.map((product) => (
+                                        <SelectItem
+                                            key={product.id}
+                                            value={
+                                                typeof product.default_price === 'string'
+                                                    ? product.default_price
+                                                    : (product.default_price as any)?.id || ''
+                                            }
+                                            className="!bg-background/50 hover:!bg-white/10"
+                                        >
+                                            {product.name}
+                                        </SelectItem>
+                                    ))
+                                ) : (
+                                    <SelectItem value="none" disabled>
+                                        No products — create one above ↑
+                                    </SelectItem>
+                                )}
+                            </SelectContent>
+                        </Select>
+                    </div>
                 </div>
-                    
+
+
+
+
+           
             )}
+
+
+            
 
             {ctaType === CtaTypeEnum.BUY_NOW && (
 
@@ -297,6 +387,9 @@ const CTAStep = ({ stripeProducts , assistants}: Props) => {
                 </div>
             </div>
             )}
+
+
+            
         </div>
     )
 };
