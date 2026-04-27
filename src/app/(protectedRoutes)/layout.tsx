@@ -22,7 +22,7 @@ const Layout = async ({ children }: Props) => {
 
     const stripeProducts = await getAllProductFromStripe()
     const assistants = await getAllAssistants()
-    console.log(assistants)
+    // console.log(assistants)
 
     return (
         <div className="flex w-full min-h-screen">
