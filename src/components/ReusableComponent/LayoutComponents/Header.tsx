@@ -11,7 +11,7 @@ import CreateWebinarButton from '../CreateWebinarButton'
 import Stripe from 'stripe'
 import StripeElements from '../Stripe/Element'
 import SubscriptionModal from '../SubscriptionModal'
-import { Assistant, assistants } from '@vapi-ai/server-sdk/api'
+import { Assistant } from '@vapi-ai/server-sdk/api'
 
 
 

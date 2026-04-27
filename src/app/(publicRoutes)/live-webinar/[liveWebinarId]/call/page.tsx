@@ -64,3 +64,5 @@ const page = async ({ params, searchParams }: Props) => {
         />
     )
 }
+
+export default page
