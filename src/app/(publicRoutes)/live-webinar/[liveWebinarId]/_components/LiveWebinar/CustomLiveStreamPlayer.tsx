@@ -23,7 +23,22 @@ const CustomLivestreamPlayer = ({
     const client = useStreamVideoClient()
     const [call, setCall] = useState<Call>()
     const [showChat, setShowChat] = useState(true)
+    const [isMuted, setIsMuted] = useState<boolean>(false)
 
+    const handleToggleMute = async () => {
+        if (!call) return
+        try {
+            if (isMuted) {
+                await call.microphone.enable()
+                setIsMuted(false)
+            } else {
+                await call.microphone.disable()
+                setIsMuted(true)
+            }
+        } catch (err) {
+            console.error('Error toggling mute:', err)
+        }
+    }
     useEffect(() => {
         if (!client) return
 
@@ -55,6 +70,8 @@ const CustomLivestreamPlayer = ({
                 userToken={token}
                 webinar={webinar}
                 call={call}
+                isMuted={isMuted}
+                onToggleMute={handleToggleMute}
             />
         </StreamCall>
     )

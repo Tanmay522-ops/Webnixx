@@ -1,5 +1,5 @@
 "use client"
-import { Loader2, MessageSquare, Users } from 'lucide-react'
+import { Loader2, MessageSquare, Mic, MicOff, PhoneOff, Users } from 'lucide-react'
 import { ParticipantView, useCallStateHooks, type Call } from "@stream-io/video-react-sdk";
 import React, { use, useEffect, useState } from 'react'
 import { WebinarWithPresenter } from '@/lib/types';
@@ -23,7 +23,10 @@ type Props = {
     username: string
     userId: string
     call: Call,
-    userToken: string
+    userToken: string,
+    isMuted?: boolean
+    onToggleMute?: () => void
+    onLeave?: () => void
 }
 
 const LiveWebinarView = ({
@@ -35,6 +38,9 @@ const LiveWebinarView = ({
     userId,
     userToken,
     call,
+    isMuted,        
+    onToggleMute,  
+    onLeave,
 }: Props) => {
     const { useParticipantCount, useParticipants } = useCallStateHooks();
     const participants = useParticipants()
@@ -240,6 +246,16 @@ const LiveWebinarView = ({
                         {isHost && (
                             <div className="flex items-center space-x-1">
                                 <Button
+                                    variant="outline"
+                                    onClick={onToggleMute}
+                                    className="flex items-center gap-2"
+                                >
+                                    {isMuted
+                                        ? <><MicOff className="h-4 w-4 text-destructive" /> Unmute</>
+                                        : <><Mic className="h-4 w-4" /> Mute</>
+                                    }
+                                </Button>
+                                <Button
                                     onClick={() => setObsDialogBox(true)}
                                     variant="outline"
                                     className="mr-2"
@@ -276,6 +292,16 @@ const LiveWebinarView = ({
                                         : "Buy Now"}
                                 </Button>
                             </div>
+                        )}
+                        {!isHost && (
+                            <Button
+                                variant="destructive"
+                                onClick={onLeave}
+                                className="flex items-center gap-2"
+                            >
+                                <PhoneOff className="h-4 w-4" />
+                                Leave
+                            </Button>
                         )}
                     </div>
                 </div>

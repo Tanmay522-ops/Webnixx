@@ -25,6 +25,19 @@ const Participant = ({ apiKey, callId, webinar }: Props) => {
 
     const clientInitialized = useRef<boolean>(false)
 
+
+    const handleLeave = async () => {
+        if (!call || !client) return
+        try {
+            await call.leave()
+            await client.disconnectUser()
+            clientInitialized.current = false
+            window.location.href = '/'
+        } catch (err) {
+            console.error('Error leaving call:', err)
+        }
+    }
+
     useEffect(() => {
         if (clientInitialized.current) return
 
@@ -210,6 +223,7 @@ const Participant = ({ apiKey, callId, webinar }: Props) => {
                     userId={attendee?.id}
                     userToken={token}
                     call={call}
+                    onLeave={handleLeave}  
                 />
             </StreamCall>
         </StreamVideo>
