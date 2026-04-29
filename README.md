@@ -42,40 +42,37 @@ Scalable, high-quality broadcasting for thousands of viewers
 
 📸 Screenshots
 
-1. The Main Dashboard & Pipeline
-
-Managing leads through various stages from registration to purchase.
-
-2. Live Webinar Room
+1. Live Webinar Room
 
 Production-grade streaming with integrated real-time chat.
 
-3. AI Agent Configuration
+![Live Webinar Room](image5.png)
+
+2. AI Agent Configuration
 
 Tweak the system prompt and first messages for your custom sales agent.
 
 ![AI Configuration](./public/image.png)
 
 
-4. High-Ticket Breakout Room
+3. High-Ticket Breakout Room
 
 Real-time voice interaction with an AI setter.
 
 ![AI Call](./public/image2.png)
 
-🛠️ Tech Stack
-Framework: Next.js 15 (App Router)
-Authentication: Clerk (User management & Auth)
-Database: Neon (Serverless PostgreSQL) with Prisma ORM
-AI Voice Technology: Vapi AI (Real-time conversational agents)
-Streaming & Chat: Stream (GetStream.io SDKs)
-Payments: Stripe Connect & Checkout (Hard paywall & product processing)
-State Management: Zustand
-Animations: Framer Motion
-Styling: Tailwind CSS & Shadcn UI
-Deployment: Docker, Coolify, and Hostinger VPS
-🚀 Core Features
-🔐 Hard Paywall Monetization
+## 🛠️ Tech Stack
+
+- **Framework:** Next.js 15 (App Router)  
+- **Authentication:** Clerk (User management & Auth)  
+- **Database:** Neon (Serverless PostgreSQL) with Prisma ORM  
+- **AI Voice Technology:** Vapi AI (Real-time conversational agents)  
+- **Streaming & Chat:** Stream (GetStream.io SDKs)  
+- **Payments:** Stripe Connect & Checkout  
+- **State Management:** Zustand  
+- **Animations:** Framer Motion  
+- **Styling:** Tailwind CSS & Shadcn UI  
+- **Deployment:** Docker, Coolify, and Hostinger VPS  
 
 Users must have an active Stripe subscription to create and host webinars, ensuring a high-value user base.
 
