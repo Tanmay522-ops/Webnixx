@@ -1,4 +1,4 @@
-WebNix: AI-Powered SaaS Webinar Platform
+🎯 WebNix — AI-Powered Webinar SaaS Platform
 
 WebNix is a disruptive SaaS platform designed for marketers and business owners to revolutionize webinars by deploying an "army of sales reps that never sleep".
 It automates the sales process by integrating human-like voice AI agents directly into the webinar experience to qualify and close leads in real-time.
@@ -46,24 +46,22 @@ Scalable, high-quality broadcasting for thousands of viewers
 
 Managing leads through various stages from registration to purchase.
 
-
 2. Live Webinar Room
 
 Production-grade streaming with integrated real-time chat.
-
 
 3. AI Agent Configuration
 
 Tweak the system prompt and first messages for your custom sales agent.
 
-![alt text](image.png)
+![AI Configuration](./public/image.png)
 
 
 4. High-Ticket Breakout Room
 
 Real-time voice interaction with an AI setter.
-![alt text](image2.png)
 
+![AI Call](./public/image2.png)
 
 🛠️ Tech Stack
 Framework: Next.js 15 (App Router)
