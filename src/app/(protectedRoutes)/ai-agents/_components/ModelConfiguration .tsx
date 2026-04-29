@@ -107,7 +107,7 @@ const ModelConfiguration = (props: Props) => {
                 <Textarea
                     value={systemPrompt}
                     onChange={(e) => setSystemPrompt(e.target.value)}
-                    className="min-h-[300px] max-h-[500px] bg-primary/10 border-input font-mono text-sm"
+                    className="min-h-[300px] max-h-[500px] bg-primary/10 border-input font-mono text-sm [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
                 />
             </div>
 

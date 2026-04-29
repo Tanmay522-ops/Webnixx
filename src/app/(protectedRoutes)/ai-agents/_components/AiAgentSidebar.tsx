@@ -34,7 +34,7 @@ const AiAgentSidebar = ({ aiAgents }: Props) => {
                     <Search className="absolute left-3 top-2.5 h-4 w-4 text-neutral-400" />
                 </div>
             </div>
-            <ScrollArea className="mt-4 overflow-auto">
+            <ScrollArea className="mt-4 overflow-auto ">
                 {aiAgents.map((aiAssistant) => (
                     <div
                         className={`p-4 ${aiAssistant.id === assistant?.id ? 'bg-primary/10' : ''

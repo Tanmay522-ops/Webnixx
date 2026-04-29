@@ -1,36 +1,104 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+WebNix: AI-Powered SaaS Webinar Platform
 
-## Getting Started
+WebNix is a disruptive SaaS platform designed for marketers and business owners to revolutionize webinars by deploying an "army of sales reps that never sleep".
+It automates the sales process by integrating human-like voice AI agents directly into the webinar experience to qualify and close leads in real-time.
 
-First, run the development server:
+🚩 Problem Statement
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Marketers and high-ticket service providers often struggle with a lack of automation and low-quality leads affecting their day-to-day operations.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Traditional webinars are passive; once the presentation ends, the host physically cannot handle hundreds or thousands of one-on-one qualification calls required to close high-ticket sales.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+This creates a bottleneck where potential customers are lost due to:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Lack of immediate engagement
+Inability to scale manual sales qualification
 
-## Learn More
+✅ Our Solution
 
-To learn more about Next.js, take a look at the following resources:
+Webnix provides a seamless infrastructure where AI sales agents handle the "heavy lifting" of sales during and after a webinar.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The platform allows hosts to:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+🔹 Deploy AI Sales Reps
 
-## Deploy on Vercel
+Human-like voice AI agents (powered by Vapi AI) can:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Speak to customers
+Book meetings
+Close leads on one-on-one calls
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+🔹 Automated Breakout Rooms
+Redirect attendees from live stream into private rooms
+AI agents filter leads, encourage sales, and push them through the pipeline
+
+🔹 High-Conversion CTAs
+"Buy Now" → Immediate product sales via Stripe
+"Book a Call" → AI-led qualification sessions
+
+🔹 Production-Grade Streaming
+Integration with OBS and Stream (GetStream.io)
+Scalable, high-quality broadcasting for thousands of viewers
+
+📸 Screenshots
+
+1. The Main Dashboard & Pipeline
+
+Managing leads through various stages from registration to purchase.
+
+
+2. Live Webinar Room
+
+Production-grade streaming with integrated real-time chat.
+
+
+3. AI Agent Configuration
+
+Tweak the system prompt and first messages for your custom sales agent.
+
+![alt text](image.png)
+
+
+4. High-Ticket Breakout Room
+
+Real-time voice interaction with an AI setter.
+![alt text](image2.png)
+
+
+🛠️ Tech Stack
+Framework: Next.js 15 (App Router)
+Authentication: Clerk (User management & Auth)
+Database: Neon (Serverless PostgreSQL) with Prisma ORM
+AI Voice Technology: Vapi AI (Real-time conversational agents)
+Streaming & Chat: Stream (GetStream.io SDKs)
+Payments: Stripe Connect & Checkout (Hard paywall & product processing)
+State Management: Zustand
+Animations: Framer Motion
+Styling: Tailwind CSS & Shadcn UI
+Deployment: Docker, Coolify, and Hostinger VPS
+🚀 Core Features
+🔐 Hard Paywall Monetization
+
+Users must have an active Stripe subscription to create and host webinars, ensuring a high-value user base.
+
+📊 Dynamic Lead Pipelines
+
+Automatically track:
+
+Registration
+Attendance
+Add to cart
+Call completion
+🎥 OBS Integration
+
+Hosts can grab RTMP credentials to stream directly from professional broadcasting software.
+
+⚡ Real-time Event Handling
+
+Fire custom events through chat channels to:
+
+Open CTAs
+Trigger modals for all participants simultaneously
+🤖 Custom AI Prompting
+
+Provide specific sales prompts to your agents to achieve high close rates.
