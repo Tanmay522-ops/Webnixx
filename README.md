@@ -29,7 +29,7 @@ Book meetings
 Close leads on one-on-one calls
 
 🔹 Automated Breakout Rooms
-Redirect attendees from live stream into private rooms
+Redirect attendees from live stream into private rooms.
 AI agents filter leads, encourage sales, and push them through the pipeline
 
 🔹 High-Conversion CTAs
