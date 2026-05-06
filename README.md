@@ -12,7 +12,7 @@ Traditional webinars are passive; once the presentation ends, the host physicall
 This creates a bottleneck where potential customers are lost due to:
 
 Lack of immediate engagement
-Inability to scale manual sales qualification
+Inability to scale manual sales qualification.
 
 ✅ Our Solution
 
