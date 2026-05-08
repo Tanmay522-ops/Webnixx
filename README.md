@@ -26,7 +26,7 @@ Human-like voice AI agents (powered by Vapi AI) can:
 
 Speak to customers
 Book meetings
-Close leads on one-on-one calls
+Close leads on one-on-one calls.
 
 🔹 Automated Breakout Rooms
 Redirect attendees from live stream into private rooms.
