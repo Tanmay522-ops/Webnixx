@@ -71,7 +71,7 @@ Real-time voice interaction with an AI setter.
 - **State Management:** Zustand  
 - **Animations:** Framer Motion  
 - **Styling:** Tailwind CSS & Shadcn UI  
-- **Deployment:** Docker, Coolify, and Hostinger VPS  
+- **Deployment:** Docker, Coolify, and Hostinger VPS.  
 
 Users must have an active Stripe subscription to create and host webinars, ensuring a high-value user base.
 
