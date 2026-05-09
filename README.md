@@ -38,7 +38,7 @@ AI agents filter leads, encourage sales, and push them through the pipeline
 
 🔹 Production-Grade Streaming
 Integration with OBS and Stream (GetStream.io)
-Scalable, high-quality broadcasting for thousands of viewers
+Scalable, high-quality broadcasting for thousands of viewers.
 
 📸 Screenshots
 
