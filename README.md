@@ -20,7 +20,7 @@ Webnix provides a seamless infrastructure where AI sales agents handle the "heav
 
 The platform allows hosts to:
 
-🔹 Deploy AI Sales Reps
+🔹 Deploy AI Sales Reps.
 
 Human-like voice AI agents (powered by Vapi AI) can:
 
