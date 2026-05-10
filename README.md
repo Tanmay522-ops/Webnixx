@@ -25,7 +25,7 @@ The platform allows hosts to:
 Human-like voice AI agents (powered by Vapi AI) can:
 
 Speak to customers
-Book meetings
+Book meetings.
 Close leads on one-on-one calls.
 
 🔹 Automated Breakout Rooms
