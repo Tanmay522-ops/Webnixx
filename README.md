@@ -68,7 +68,7 @@ Real-time voice interaction with an AI setter.
 - **Database:** PostgreSQL with Prisma ORM  
 - **AI Voice Technology:** (Real-time conversational agents)  
 - **Payments:** Stripe Connect & Checkout  
-- **State Management:** Zustand  
+- **State Management:** Zustand. 
 - **Animations:** Framer Motion  
 - **Styling:** Tailwind CSS & Shadcn UI  
 - **Deployment:** Docker, Coolify, and Hostinger VPS.  
