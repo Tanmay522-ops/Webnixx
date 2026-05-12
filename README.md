@@ -93,6 +93,6 @@ Fire custom events through chat channels to:
 
 Open CTAs
 Trigger modals for all participants simultaneously
-🤖 Custom AI Prompting
+🤖 Custom AI Prompting.
 
 Provide specific sales prompts to your agents to achieve high close rates.
