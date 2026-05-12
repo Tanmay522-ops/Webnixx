@@ -92,7 +92,7 @@ Hosts can grab RTMP credentials to stream directly from professional broadcastin
 Fire custom events through chat channels to:
 
 Open CTAs
-Trigger modals for all participants simultaneously
+Trigger modals for all participants simultaneously.
 🤖 Custom AI Prompting.
 
 Provide specific sales prompts to your agents to achieve high close rates.
