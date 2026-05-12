@@ -3,7 +3,7 @@
 WebNix is a disruptive SaaS platform designed for marketers and business owners to revolutionize webinars by deploying an "army of sales reps that never sleep".
 It automates the sales process by integrating human-like voice AI agents directly into the webinar experience to qualify and close leads in real-time.
 
-🚩 Problem Statement
+🚩 Problem Statement.
 
 Marketers and high-ticket service providers often struggle with a lack of automation and low-quality leads affecting their day-to-day operations.
 
