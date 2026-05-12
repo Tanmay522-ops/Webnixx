@@ -65,7 +65,7 @@ Real-time voice interaction with an AI setter.
 
 - **Framework:** Next.js 15 (App Router)  
 - **Authentication:** Clerk (User management & Auth)  
-- **Database:** PostgreSQL with Prisma ORM  
+- **Database:** PostgreSQL with Prisma ORM.  
 - **AI Voice Technology:** (Real-time conversational agents)  
 - **Payments:** Stripe Connect & Checkout  
 - **State Management:** Zustand. 
