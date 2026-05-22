@@ -14,8 +14,11 @@ export const getStreamIoToken = async (attendee: Attendee | null) => {
             image: `https://api.dicebear.com/7.x/initials/svg?seed=${attendee?.name || 'Guest'
                 }`,
         }
+ console.log('Upserting user:', newUser) // ← add this
 
         await getStreamClient.upsertUsers([newUser])
+
+        console.log('Upsert successful, generating token...') // ← add this
         // validity is optional (by default the token is valid for an hour)
         const validity = 60 * 60
         const token = getStreamClient.generateUserToken({
@@ -23,9 +26,14 @@ export const getStreamIoToken = async (attendee: Attendee | null) => {
             validity_in_seconds: validity,
         })
 
+        console.log('Token generated successfully') // ← add this
+
         return token
     } catch (error) { 
-        console.error('Error generating Stream Io token:', error)
+        console.error('Stream error name:', (error as any)?.name)
+        console.error('Stream error message:', (error as any)?.message)
+        console.error('Stream error status:', (error as any)?.status)
+        console.error('Stream error response:', JSON.stringify((error as any)?.response?.data, null, 2))
         throw new Error('Failed to generate Stream Io token')
     }
 }

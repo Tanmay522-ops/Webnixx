@@ -184,6 +184,8 @@ export const registerAttendee = async ({
             })
         }
 
+        console.log('attendee.id:', attendee.id)
+
 
         // Check for existing attendance
         const existingAttendance = await prismaClient.attendance.findFirst({
@@ -197,6 +199,10 @@ export const registerAttendee = async ({
         })
 
         if (existingAttendance) {
+
+            console.log('existingAttendance.id:', existingAttendance.id)
+            console.log('existingAttendance.attendeeId:', existingAttendance.attendeeId)
+            console.log('existingAttendance.user:', existingAttendance.user)
             return {
                 success: true,
                 status: 200,
@@ -277,15 +283,12 @@ export const changeAttendanceType = async (
     }
 }
 
-
-
-
 export const getAttendeeById = async (id: string, webinarId: string) => {
     try {
         const attendee = await prismaClient.attendee.findUnique({
             where: {
                 id,
-            },
+            }
         })
 
         const attendance = await prismaClient.attendance.findFirst({

@@ -58,20 +58,28 @@ const WaitListComponent = ({
                 webinarId
             })
 
+            // 👇 ADD THIS LINE HERE
+            console.log('res.data keys:', Object.keys(res.data || {}))
+            console.log('res.data full:', res.data)
+
             if(!res.success){
                 throw new Error(res.message || "Something Went Wrong")
             }
         
-            if (res.data?.user) {
-                setAttendee({
-                    id: res.data.user.id,
-                    name: res.data.user.name,
-                    email: res.data.user.email,
-                    callStatus: 'PENDING',
-                    createdAt: new Date(), 
-                    updatedAt: new Date(),
-                })
+            const attendeeUser = res.data?.user
+            if (!attendeeUser) {
+                throw new Error('Registration succeeded but attendee data is missing')
             }
+
+            setAttendee({
+                id: attendeeUser.id,
+                name: attendeeUser.name,
+                email: attendeeUser.email,
+                callStatus: attendeeUser.callStatus ?? 'PENDING',
+                createdAt: attendeeUser.createdAt ?? new Date(),
+                updatedAt: attendeeUser.updatedAt ?? new Date(),
+            })
+
             toast.success(
                 webinarStatus === WebinarStatusEnum.LIVE
                     ? 'Successfully joined the webinar!'
