@@ -132,6 +132,71 @@
   }
 }
 
+.radial {
+  background-image: radial-gradient(
+    ellipse farthest-side,
+    white,
+    #716768,
+    black
+  );
+  background-size: 100% 90%;
+  background-repeat: no-repeat;
+}
+
+.text-gradient {
+  /* Add a default gradient background here */
+  background: linear-gradient(to right, #ffffff, #808080); 
+  background-clip: text;
+  -webkit-background-clip: text; /* Required for Safari/Chrome */
+  -webkit-text-fill-color: transparent;
+  display: inline-block; /* Helps ensure the background fills the text area */
+}
+
+.text-radial {
+  background-image: radial-gradient(
+    ellipse farthest-side,
+    rgba(113, 103, 104, 0.2) 30%,
+    black 70%
+  );
+  background-size: 100% 50%;
+  background-repeat: no-repeat;
+}
+
+.text-radial--circle {
+  background-image: radial-gradient(
+    circle farthest-side,
+    rgba(113, 103, 104, 0.35) 20%,
+    black 70%
+  );
+  background-size: 50% 70%;
+  background-repeat: no-repeat;
+  background-position: top center;
+}
+
+.backdrop--blur__safari {
+  -webkit-backdrop-filter: blur(5px);
+}
+
+.radial--blur {
+  -webkit-backdrop-filter: blur(100px);
+  filter: blur(100px);
+  background: #877874;
+}
+
+
+
+@media only screen and (max-width: 800px) {
+  .text-radial--circle {
+    background-image: radial-gradient(
+      circle farthest-side,
+      rgba(113, 103, 104, 0.2) 20%,
+      black 70%
+    );
+    background-size: 100% 50%;
+    background-repeat: no-repeat;
+    background-position: top center;
+  }
+}
 
 @layer utilities {
   .text-balance {
@@ -155,6 +220,8 @@
   border: 0.5px solid #A76EF6;
   background: radial-gradient(80.86% 125% at 50% 45%, var(--background-bg-background-10, rgba(9, 9, 11, 0.08)) 0%, var(--background-bg-accent-secondary-100, rgba(135, 49, 255, 0.75)) 100%), linear-gradient(180deg, var(--background-bg-background, rgba(9, 9, 11, 0.50)) 60%, var(--background-bg-accent-secondary-100, rgba(135, 49, 255, 0.50)) 100%);
 }
+
+
 
 /* Add these styles to your global CSS or create a new CSS module */
 @keyframes pulse {
