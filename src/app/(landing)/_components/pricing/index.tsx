@@ -105,8 +105,8 @@ export const PricingSection = (props: Props) => {
                         <Card
                             key={index}
                             className={`relative overflow-hidden rounded-3xl border transition-all duration-300 hover:-translate-y-2 ${plan.popular
-                                    ? "bg-[#151515] border-purple-500/40 shadow-[0_0_60px_rgba(168,85,247,0.18)]"
-                                    : "bg-themeBlack border-themeGray"
+                                ? "bg-[#151515] border-purple-500/40 shadow-[0_0_60px_rgba(168,85,247,0.18)]"
+                                : "bg-themeBlack border-themeGray"
                                 }`}
                         >
                             {/* Popular Badge */}
@@ -143,8 +143,8 @@ export const PricingSection = (props: Props) => {
                                         <Button
                                             variant="default"
                                             className={`w-full rounded-2xl py-6 text-sm font-semibold transition-all duration-300 ${plan.popular
-                                                    ? "bg-gradient-to-r from-purple-500 to-fuchsia-500 hover:opacity-90 text-white"
-                                                    : "bg-[#333337] hover:bg-white hover:text-black text-white"
+                                                ? "bg-gradient-to-r from-purple-500 to-fuchsia-500 hover:opacity-90 text-white"
+                                                : "bg-[#333337] hover:bg-white hover:text-black text-white"
                                                 }`}
                                         >
                                             {plan.button}

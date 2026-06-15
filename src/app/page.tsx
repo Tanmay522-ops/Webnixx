@@ -1,13 +1,18 @@
+"use client"
 import { Button } from "@/components/ui/button";
 import Menu from "./(landing)/_components/navbar/menu";
 import { LogOut, MenuIcon } from "lucide-react";
-import Link from "next/link";
 import GlassSheet from "@/components/ReusableComponent/global/glass-sheet";
 import CallToAction from "./(landing)/_components/call-to-action";
 import DashboardSnippet from "./(landing)/_components/dashboard-snippets";
 import dynamic from "next/dynamic";
 import Conversation from "./(landing)/_components/conversation";
-
+import { useState } from "react";
+import SignIn from "./(auth)/sign-in/[[...sign-in]]/page";
+import Link from "next/link";
+import { useAuth } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 const PricingSection = dynamic(
     () =>
@@ -18,49 +23,64 @@ const PricingSection = dynamic(
 )
 
 export default function LandingPage() {
+    const [loginOpen, setLoginOpen] = useState(false);
+    const { isSignedIn, isLoaded } = useAuth();
+    const router = useRouter();
+
+    useEffect(() => {
+        if (isLoaded && isSignedIn) {
+            router.push("/callback"); 
+        }
+    }, [isLoaded, isSignedIn, router]);
+
+    if (!isLoaded || isSignedIn) return null;
+
     return (
         <>
-        <div className="w-full flex justify-between sticky top-0 items-center px-8 py-5 z-50">
-            <p className="font-bold text-2xl">Webnix.</p>
+            <div className="w-full flex justify-between sticky top-0 items-center px-8 py-5 z-50">
+                <p className="font-bold text-2xl">Webnix.</p>
 
-            <Menu orientation="desktop" />
+                <Menu orientation="desktop" />
 
-            <div className="flex gap-2">
-                <Link href="/sign-in">
-                    <Button
-                        variant="outline"
-                        className="bg-themeBlack rounded-2xl flex gap-2 border-themeGray hover:bg-themeGray"
-                    >
-                        <LogOut />
-                        Login
-                    </Button>
-                </Link>
-                <GlassSheet
-                    triggerClass="lg:hidden"
-                    trigger={
+                <div className="flex gap-2">
+                    {/* ✅ No Link wrapper, just the button */}
+                    <Link href="/sign-in?dialog=true">
                         <Button
-                            variant="ghost"
-                            className="hover:bg-transparent"
+                            variant="outline"
+                            className="bg-themeBlack rounded-2xl flex gap-2"
                         >
-                            <MenuIcon size={30} />
+                            <LogOut />
+                            Login
                         </Button>
-                    }
-                >
-                    <Menu orientation="mobile" />
-                </GlassSheet>
+                    </Link>
+
+                    {/* ✅ SignIn dialog is a sibling, outside the button */}
+                    <SignIn open={loginOpen} onOpenChange={setLoginOpen} />
+
+                    <GlassSheet
+                        triggerClass="lg:hidden"
+                        trigger={
+                            <Button
+                                variant="ghost"
+                                className="hover:bg-transparent"
+                            >
+                                <MenuIcon size={30} />
+                            </Button>
+                        }
+                    >
+                        <Menu orientation="mobile" />
+                    </GlassSheet>
+                </div>
             </div>
-        </div>
 
             <main className="md:px-10 py-20 flex flex-col gap-36">
                 <div>
                     <CallToAction />
-                   <DashboardSnippet />
-                   <Conversation/>
+                    <DashboardSnippet />
+                    <Conversation />
                 </div>
-                <PricingSection/>
+                <PricingSection />
             </main>
-    </>
-        
-    
+        </>
     )
 }
