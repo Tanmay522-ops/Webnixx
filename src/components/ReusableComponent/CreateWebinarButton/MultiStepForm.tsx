@@ -8,6 +8,10 @@ import { cn } from '@/lib/utils'
 import { createWebinar } from '@/actions/webinar'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
+import { MotionProps } from 'framer-motion'  // add MotionProps to your existing framer import
+
+const MotionDiv = motion.div as React.ComponentType<React.HTMLAttributes<HTMLDivElement> & MotionProps>
+const MotionH3 = motion.h3 as React.ComponentType<React.HTMLAttributes<HTMLHeadingElement> & MotionProps>
 
 
 type Step ={
@@ -101,7 +105,7 @@ const MultiStepForm = ({steps,onComplete}:Props) => {
                 >
                   <div className="flex items-start gap-4">
                     <div className="relative">
-                      <motion.div
+                      <MotionDiv
                         initial={false}
                         animate={{
                           backgroundColor:
@@ -125,7 +129,7 @@ const MultiStepForm = ({steps,onComplete}:Props) => {
                               <Check className="w-5 h-5 text-white" />
                             </motion.div>
                           ) : (
-                          <motion.div
+                          <MotionDiv
                                 key="number"
                                 initial={{ opacity: 0, scale: 0.5 }}
                                 animate={{ opacity: 1, scale: 1 }}
@@ -134,14 +138,14 @@ const MultiStepForm = ({steps,onComplete}:Props) => {
                                 className="text-white"
                               >
                                 <Check className="w-5 h-5 text-white/50" />
-                          </motion.div>
+                          </MotionDiv>
                      )}
                         </AnimatePresence>
-                      </motion.div>
+                      </MotionDiv>
 
                       {index < steps.length - 1 && (
                         <div className="absolute top-8 left-4 w-0.5 h-16 bg-gray-700 overflow-hidden">
-                          <motion.div
+                          <MotionDiv
                             initial={{
                               height: isPast || isCompleted ? '100%' : '0%',
                             }}
@@ -156,7 +160,7 @@ const MultiStepForm = ({steps,onComplete}:Props) => {
                       )} 
                     </div>
                     <div className="pt-1">
-                      <motion.h3
+                      <MotionH3
                         animate={{
                           color:
                             isCurrent || isCompleted
@@ -167,7 +171,7 @@ const MultiStepForm = ({steps,onComplete}:Props) => {
                         className="font-medium"
                       >
                         {step.title}
-                      </motion.h3>
+                      </MotionH3>
                       <p className="text-sm text-gray-500">
                         {step.description}
                       </p>
@@ -178,13 +182,13 @@ const MultiStepForm = ({steps,onComplete}:Props) => {
             })}
           </div>
         </div>
-        <Separator 
-        orientation='"vertical'
-        className=' data-[orientation-vertical]:h-1/2'
+        <Separator
+          orientation="vertical"
+          className="data-[orientation=vertical]:h-1/2"
         />
         <div className='w-full md:w-2/3'>
         <AnimatePresence mode='wait'>
-            <motion.div
+            <MotionDiv
               key={currentStep.id}
               initial={{ x: 20, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
@@ -207,7 +211,7 @@ const MultiStepForm = ({steps,onComplete}:Props) => {
                   <p>{validationError}</p>
                 </div>
               )}
-            </motion.div>
+            </MotionDiv>
           </AnimatePresence>
         </div>
       </div>
