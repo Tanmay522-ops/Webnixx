@@ -44,15 +44,25 @@ const CustomLivestreamPlayer = ({
 
         const myCall = client.call(callType, callId)
         setCall(myCall)
+
+        myCall.camera.disable()
+        myCall.microphone.disable()
         myCall.join({ create: true }).then(
-            () => setCall(myCall),
+            async () => {
+                setCall(myCall)
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({ video: true })
+                    stream.getTracks().forEach(t => t.stop()) // release it
+                    await myCall.camera.enable()
+                    await myCall.microphone.enable()
+                } catch (err) {
+                    console.error('Device error:', err)
+                }
+            },
             () => console.error("Failed to join the call"),
         )
 
         return () => {
-        //    myCall.leave().catch((e)=>{
-        //     console.error("Failed to leave call",e)
-        //    })
             setCall(undefined)
         }
     }, [client, callId, callType])

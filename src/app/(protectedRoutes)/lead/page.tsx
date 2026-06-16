@@ -7,9 +7,9 @@ import React from 'react'
 import { leadData } from './__tests__/data'
 import { Badge } from '@/components/ui/badge'
 
-type Props = {}
 
-const page = (props: Props) => {
+
+const page = () => {
     return (
         <div className="w-full flex flex-col gap-8">
             <PageHeader

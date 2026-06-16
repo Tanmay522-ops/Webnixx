@@ -190,10 +190,12 @@ const AutoConnectCall = ({
 
     // todo vapi call useEffect
     const startCall = async () => {
-           if (hasStarted.current) return; 
-            hasStarted.current = true;
+        if (hasStarted.current) return;
+        hasStarted.current = true;
         try {
             setCallStatus(CallStatus.CONNECTING);
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+            stream.getTracks().forEach(t => t.stop())
             await vapi.start(assistantId);
             const res = await changeCallStatus(userId, CallStatusEnum.InProgress);
             if (!res.success) {
@@ -280,7 +282,7 @@ const AutoConnectCall = ({
             vapi.off('speech-end', onSpeechEnd)
             vapi.off('error', onError)
         }
-       
+
     }, [userName, callTimeLimit])
 
     return (
@@ -289,7 +291,7 @@ const AutoConnectCall = ({
                 <div className="flex-1 bg-card rounded-xl overflow-hidden shadow-lg relative">
                     <div className="absolute top-4 left-4 bg-black/40 text-white px-3 py-1 rounded-full text-sm flex items-center gap-2 z-10">
                         <Mic
-                            className={cn (
+                            className={cn(
                                 'h-4 w-4',
                                 assistantIsSpeaking ? 'text-accent-primary' : ''
                             )}
@@ -329,24 +331,24 @@ const AutoConnectCall = ({
                     </div>
                 </div>
                 <div className="flex-1 bg-card rounded-xl overflow-hidden shadow-lg relative">
-                <div className="absolute top-4 left-4 bg-black/40 text-white px-3 py-1 rounded-full text-sm flex items-center gap-2 z-10">
-                    {isMicMuted ? (
-                        <>
-                            <MicOff className="h-4 w-4 text-destructive" />
-                            <span>Muted</span>
-                        </>
-                    ) : (
-                        <>
-                            <Mic
-                                className={cn(
-                                    'h-4 w-4',
-                                    userIsSpeaking ? 'text-accent-secondary' : ''
-                                )}
-                            />
-                            <span>{userName}</span>
-                        </>
-                    )}
-                </div>
+                    <div className="absolute top-4 left-4 bg-black/40 text-white px-3 py-1 rounded-full text-sm flex items-center gap-2 z-10">
+                        {isMicMuted ? (
+                            <>
+                                <MicOff className="h-4 w-4 text-destructive" />
+                                <span>Muted</span>
+                            </>
+                        ) : (
+                            <>
+                                <Mic
+                                    className={cn(
+                                        'h-4 w-4',
+                                        userIsSpeaking ? 'text-accent-secondary' : ''
+                                    )}
+                                />
+                                <span>{userName}</span>
+                            </>
+                        )}
+                    </div>
 
                     <div className="absolute top-4 right-4 bg-black/40 text-white px-3 py-1 rounded-full text-sm flex items-center gap-2 z-10">
                         <Clock className="h-4 w-4" />
@@ -394,7 +396,7 @@ const AutoConnectCall = ({
                             )}
                         </div>
                     </div>
-            </div>
+                </div>
                 {callStatus === CallStatus.FINISHED && (
                     <div className="absolute inset-0 bg-background/90 flex items-center justify-center flex-col gap-4 z-20">
                         <h3 className="text-xl font-medium">Call Ended</h3>

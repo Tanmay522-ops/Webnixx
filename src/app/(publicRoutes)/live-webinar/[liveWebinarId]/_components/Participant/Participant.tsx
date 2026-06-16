@@ -72,7 +72,9 @@ const Participant = ({ apiKey, callId, webinar }: Props) => {
                 const streamCall = streamClient.call
                     ('livestream', callId)
 
-                await streamCall.join({ create: true })
+                await streamCall.join({ create: false })
+                await streamCall.camera.disable()
+                await streamCall.microphone.disable()
                
 
                 setClient(streamClient)
@@ -112,7 +114,7 @@ const Participant = ({ apiKey, callId, webinar }: Props) => {
         }
 
 
-    }, [apiKey, callId, attendee, call, client, call, webinar.id])
+    }, [apiKey, callId, attendee?.id])
 
     if (!attendee) {
         return (
