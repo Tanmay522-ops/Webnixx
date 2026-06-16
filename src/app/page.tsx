@@ -13,19 +13,11 @@ import Link from "next/link";
 import { useAuth } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { HeroDemo } from "./(landing)/_components/animated-hero/hero";
-import Example from "./(landing)/_components/hero/hero";
 import FeatureDemo from "./(landing)/_components/Feature-sections/Feature-Demo";
-import Feature108 from "./(landing)/_components/Feature-sections/feature-sections";
 import FooterNewsletter from "./(landing)/_components/Footer/Footer-column";
+import Example from "./(landing)/_components/hero/demo";
+import Feature108 from "./(landing)/_components/Feature-sections/feature-sections";
 
-const PricingSection = dynamic(
-    () =>
-        import("./(landing)/_components/pricing").then(
-            (component) => component.PricingSection,
-        ),
-    { ssr: true },
-)
 
 export default function LandingPage() {
     const [loginOpen, setLoginOpen] = useState(false);
@@ -49,7 +41,7 @@ export default function LandingPage() {
 
                 <div className="flex gap-2">
                     {/* ✅ No Link wrapper, just the button */}
-                    <Link href="/sign-in?dialog=true">
+                    <Link href="/sign-in">
                         <Button
                             variant="outline"
                             className="bg-themeBlack rounded-2xl flex gap-2"
@@ -58,9 +50,6 @@ export default function LandingPage() {
                             Login
                         </Button>
                     </Link>
-
-                    {/* ✅ SignIn dialog is a sibling, outside the button */}
-                    <SignIn open={loginOpen} onOpenChange={setLoginOpen} />
 
                     <GlassSheet
                         triggerClass="lg:hidden"
@@ -83,8 +72,8 @@ export default function LandingPage() {
                     <CallToAction />
                     <DashboardSnippet />
                     <Conversation />
+                    <Feature108 />
                    <Example/>
-                  <Feature108/>
                 </div>
                <FooterNewsletter/>
             </main>

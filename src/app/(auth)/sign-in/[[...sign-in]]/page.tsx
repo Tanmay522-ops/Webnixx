@@ -8,22 +8,10 @@ import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
-} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-interface SignInProps {
-    open: boolean;
-    onOpenChange: (open: boolean) => void;
-}
-
-export default function SignIn({ open, onOpenChange }: SignInProps) {
+export default function SignIn() {
     const id = useId();
     const { signIn } = useSignIn();
     const { signOut } = useClerk();
@@ -53,12 +41,12 @@ export default function SignIn({ open, onOpenChange }: SignInProps) {
             if (error) throw error;
 
             toast.success("Login successful!");
-            onOpenChange(false);
             router.push("/callback");
-        } catch (err: any) {
+        } catch (err: unknown) {
             console.error(err);
-            if (err.errors?.length > 0) {
-                err.errors.forEach((error: any) => {
+            const clerkErr = err as { errors?: { code: string; message: string }[] };
+            if (clerkErr.errors?.length) {
+                clerkErr.errors.forEach((error) => {
                     switch (error.code) {
                         case "form_password_incorrect":
                             setErrors((prev) => ({ ...prev, password: "Incorrect password." }));
@@ -90,41 +78,18 @@ export default function SignIn({ open, onOpenChange }: SignInProps) {
                 redirectUrl: "/callback",
                 redirectCallbackUrl: "/callback",
             });
-        } catch (err: any) {
+        } catch (err: unknown) {
             console.error(err);
         }
     };
 
     return (
-        <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="bg-black border border-white/10 text-white"
-                onInteractOutside={(e) => e.preventDefault()}  
-            >
-                <div className="flex flex-col items-center gap-2">
-                    <div
-                        className="flex size-11 shrink-0 items-center justify-center rounded-full border border-white/10"
-                        aria-hidden="true"
-                    >
-                        <svg
-                            className="stroke-zinc-100"
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="20"
-                            height="20"
-                            viewBox="0 0 32 32"
-                            aria-hidden="true"
-                        >
-                            <circle cx="16" cy="16" r="12" fill="none" strokeWidth="8" />
-                        </svg>
-                    </div>
-
-                    <DialogHeader>
-                        <DialogTitle className="sm:text-center text-white">
-                            Welcome Back
-                        </DialogTitle>
-                        <DialogDescription className="sm:text-center text-neutral-400">
-                            Login to continue to Sellnix
-                        </DialogDescription>
-                    </DialogHeader>
+        <div className="min-h-screen flex items-center justify-center bg-black ">
+            <div className="w-full max-w-lg p-8 rounded-2xl border border-white/10 bg-white/[0.03]">
+                <div className="flex flex-col items-center gap-2 mb-6">
+                 
+                    <h1 className="text-xl font-semibold text-white">Welcome Back</h1>
+                    <p className="text-sm text-neutral-400">Login to continue to Sellnix</p>
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-5">
@@ -192,7 +157,7 @@ export default function SignIn({ open, onOpenChange }: SignInProps) {
                     </Button>
                 </form>
 
-                <div className="flex items-center gap-3 before:h-px before:flex-1 before:bg-white/10 after:h-px after:flex-1 after:bg-white/10">
+                <div className="flex items-center gap-3 my-5 before:h-px before:flex-1 before:bg-white/10 after:h-px after:flex-1 after:bg-white/10">
                     <span className="text-xs text-neutral-500 uppercase">Or continue with</span>
                 </div>
 
@@ -207,13 +172,13 @@ export default function SignIn({ open, onOpenChange }: SignInProps) {
                     </Button>
                 </div>
 
-                <div className="text-center text-sm text-neutral-400">
+                <div className="text-center text-sm text-neutral-400 mt-5">
                     Don&apos;t have an account?{" "}
-                    <a href="/sign-up?dialog=true" className="font-medium text-white hover:underline">
+                    <a href="/sign-up" className="font-medium text-white hover:underline">
                         Sign Up
                     </a>
                 </div>
-            </DialogContent>
-        </Dialog>
+            </div>
+        </div>
     );
 }

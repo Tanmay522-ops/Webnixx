@@ -3,7 +3,7 @@ import React from "react";
 
 export default function Example() {
     return (
-        <div className="flex flex-col items-center justify-center max-w-5xl w-full mx-2 rounded-2xl shadow-md bg-gradient-to-b from-[#5524B7] to-[#0B1860] px-4 py-20 text-center">
+        <div className="flex flex-col items-center justify-center max-w-9xl w-full mx-2 rounded-2xl shadow-md bg-gradient-to-b from-[#5524B7] to-[#0B1860] px-4 py-20 text-center">
             <div className="flex items-center -space-x-7">
                 <img src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=200" alt="image"
                     className="h-16 w-16 rounded-full border-4 border-white" />
