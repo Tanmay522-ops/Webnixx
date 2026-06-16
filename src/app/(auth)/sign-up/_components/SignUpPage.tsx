@@ -2,7 +2,7 @@
 
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import SignUp from "./[[...sign-up]]/page"; // adjust path
+import SignUp from "../[[...sign-up]]/page"; // adjust path
 
 export default function SignUpPage() {
     const searchParams = useSearchParams();

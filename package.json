@@ -13,6 +13,7 @@
     "@clerk/nextjs": "^7.0.4",
     "@clerk/types": "^4.101.25",
     "@gsap/react": "^2.1.2",
+    "@paper-design/shaders-react": "^0.0.76",
     "@prisma/client": "^6.3.1",
     "@stream-io/node-sdk": "^0.4.23",
     "@stream-io/video-react-sdk": "^1.14.6",

@@ -13,6 +13,11 @@ import Link from "next/link";
 import { useAuth } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { HeroDemo } from "./(landing)/_components/animated-hero/hero";
+import Example from "./(landing)/_components/hero/hero";
+import FeatureDemo from "./(landing)/_components/Feature-sections/Feature-Demo";
+import Feature108 from "./(landing)/_components/Feature-sections/feature-sections";
+import FooterNewsletter from "./(landing)/_components/Footer/Footer-column";
 
 const PricingSection = dynamic(
     () =>
@@ -78,8 +83,10 @@ export default function LandingPage() {
                     <CallToAction />
                     <DashboardSnippet />
                     <Conversation />
+                   <Example/>
+                  <Feature108/>
                 </div>
-                <PricingSection />
+               <FooterNewsletter/>
             </main>
         </>
     )

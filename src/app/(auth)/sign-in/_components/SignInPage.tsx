@@ -2,7 +2,8 @@
 
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import SignIn from "./[[...sign-in]]/page"; // adjust path
+import SignIn from "../[[...sign-in]]/page";
+
 
 export default function SignInPage() {
     const searchParams = useSearchParams();
