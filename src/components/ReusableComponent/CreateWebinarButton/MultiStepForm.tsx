@@ -64,7 +64,29 @@ const MultiStepForm = ({steps,onComplete}:Props) => {
     if (isLastStep) {
       try {
         setSubmitting(true)
-        const result =  await createWebinar(formData)
+        
+        let formDataWithUTC = { ...formData }
+        if (formData.basicInfo.date && formData.basicInfo.time) {
+          const [hoursStr, minutesStr] = formData.basicInfo.time.split(':')
+          let hours = parseInt(hoursStr, 10)
+          const minutes = parseInt(minutesStr || '0', 10)
+
+          if (formData.basicInfo.timeFormat === 'PM' && hours < 12) hours += 12
+          else if (formData.basicInfo.timeFormat === 'AM' && hours === 12) hours = 0
+
+          const localDate = new Date(formData.basicInfo.date)
+          localDate.setHours(hours, minutes, 0, 0)
+
+          formDataWithUTC = {
+            ...formData,
+            basicInfo: {
+              ...formData.basicInfo,
+              date: localDate,
+            }
+          }
+        }
+
+        const result = await createWebinar(formDataWithUTC)
 
         if(result.status === 200 && result.webinarId){
           toast.success("Your webinar has been created successfully.")

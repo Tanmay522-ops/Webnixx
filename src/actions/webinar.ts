@@ -8,26 +8,7 @@ import { revalidatePath } from "next/cache"
 
 
 
-function combineDateTime(
-    date: Date,
-    timeStr: string,
-    timeFormat: 'AM' | 'PM'
-): Date {
-    const [hoursStr, minutesStr] = timeStr.split(':')
-    let hours = Number.parseInt(hoursStr, 10)
-    const minutes = Number.parseInt(minutesStr || '0', 10)
 
-    // Convert to 24-hour format
-    if (timeFormat === 'PM' && hours < 12) {
-        hours += 12
-    } else if (timeFormat === 'AM' && hours === 12) {
-        hours = 0
-    }
-
-    const result = new Date(date)
-    result.setHours(hours, minutes, 0, 0)
-    return result
-}
 
 export const createWebinar = async (formData: WebinarFormState) => {
     try {
@@ -56,11 +37,7 @@ export const createWebinar = async (formData: WebinarFormState) => {
             return { status: 404, message: 'Webinar time is required' }
         }
 
-        const combinedDateTime = combineDateTime(
-            formData.basicInfo.date,
-            formData.basicInfo.time,
-            formData.basicInfo.timeFormat || 'AM'
-        )
+        const combinedDateTime = new Date(formData.basicInfo.date)
 
         const now = new Date()
 
