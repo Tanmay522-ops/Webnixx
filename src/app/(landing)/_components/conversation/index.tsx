@@ -242,7 +242,7 @@ export default function App() {
             </div>
 
             {/* Participants */}
-            <div className="p-6 md:p-8 grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-5">
+            <div className="hidden md:p-6 md:p-8 grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-5">
               {participants.map((p) => (
                 <div
                   key={p.initials}
@@ -286,7 +286,7 @@ export default function App() {
 
             {/* Bottom Controls */}
             <div
-              className="flex items-center justify-center gap-4 py-5"
+              className=" hidden md:flex items-center justify-center gap-4 py-5"
               style={{
                 borderTop: "1px solid rgba(255,255,255,0.06)",
               }}

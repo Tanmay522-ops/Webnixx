@@ -38,7 +38,7 @@ const defaultTabs: Tab[] = [
             description:
                 "Launch professional webinars in minutes. Invite your audience, present your product, and let Webnix handle the rest — from registrations to follow-ups. Built for founders, coaches, and sales teams who want results.",
             buttonText: "Host a Webinar",
-            imageSrc: "https://shadcnblocks.com/images/block/placeholder-dark-1.svg",
+            imageSrc: "/image-1.png",
             imageAlt: "Webnix webinar hosting interface",
         },
     },
@@ -52,7 +52,7 @@ const defaultTabs: Tab[] = [
             description:
                 "Join live or recorded webinars from top brands and creators. Ask questions, interact in real time, and get personalized product recommendations — all inside a clean, distraction-free experience.",
             buttonText: "Browse Webinars",
-            imageSrc: "https://shadcnblocks.com/images/block/placeholder-dark-2.svg",
+            imageSrc: "/image-2.png",
             imageAlt: "Webnix attendee experience",
         },
     },
@@ -66,7 +66,7 @@ const defaultTabs: Tab[] = [
             description:
                 "After every webinar, Webnix's AI calling agent follows up with attendees, answers objections, and convinces them to buy — just like a real sales rep, but available 24/7 at a fraction of the cost.",
             buttonText: "See the AI Agent",
-            imageSrc: "https://shadcnblocks.com/images/block/placeholder-dark-3.svg",
+            imageSrc: "/image-3.jpeg",
             imageAlt: "Webnix AI calling agent dashboard",
         },
     },
@@ -79,7 +79,7 @@ export default function Feature108({
     tabs = defaultTabs,
 }: Feature108Props) {
     return (
-        <section className="py-32">
+        <section className="py-22">
             <div className="container mx-auto">
                 <div className="flex flex-col items-center gap-4 text-center">
                     <Badge
@@ -95,7 +95,7 @@ export default function Feature108({
                 </div>
 
                 <Tabs defaultValue={tabs[0].value} className="mt-8">
-                    <TabsList className="container flex flex-col items-center justify-center gap-4 sm:flex-row md:gap-10 bg-transparent">
+                    <TabsList className="container flex flex-row items-center justify-center gap-4 sm:flex-row md:gap-10 bg-transparent">
                         {tabs.map((tab) => (
                             <TabsTrigger
                                 key={tab.value}
