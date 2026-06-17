@@ -46,7 +46,7 @@ Scalable, high-quality broadcasting for thousands of viewers.
 
 Production-grade streaming with integrated real-time chat.
 
-![Live Webinar Room](image5.png)
+![Live Webinar Room](./public/image5.png)
 
 2. AI Agent Configuration
 
