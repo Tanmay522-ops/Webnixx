@@ -82,7 +82,7 @@ export default function FooterNewsletter() {
                                     style={{ background: `var(--accent-primary)` }}
                                 />
                                 <img
-                                    src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=320&h=240&q=80"
+                                    src="/image-5.png"
                                     alt="Webnixx webinar platform"
                                     className="relative w-64 lg:w-80 rounded-xl object-cover"
                                 />

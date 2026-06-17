@@ -5,15 +5,11 @@ import { LogOut, MenuIcon } from "lucide-react";
 import GlassSheet from "@/components/ReusableComponent/global/glass-sheet";
 import CallToAction from "./(landing)/_components/call-to-action";
 import DashboardSnippet from "./(landing)/_components/dashboard-snippets";
-import dynamic from "next/dynamic";
-import Conversation from "./(landing)/_components/conversation";
 import { useState } from "react";
-import SignIn from "./(auth)/sign-in/[[...sign-in]]/page";
 import Link from "next/link";
 import { useAuth } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import FeatureDemo from "./(landing)/_components/Feature-sections/Feature-Demo";
 import FooterNewsletter from "./(landing)/_components/Footer/Footer-column";
 import Example from "./(landing)/_components/hero/demo";
 import Feature108 from "./(landing)/_components/Feature-sections/feature-sections";
@@ -71,7 +67,6 @@ export default function LandingPage() {
                 <div>
                     <CallToAction />
                     <DashboardSnippet />
-                    {/* <Conversation /> */}
                     <Feature108 />
                    <Example/>
                 </div>
