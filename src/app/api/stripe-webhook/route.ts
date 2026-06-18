@@ -1,3 +1,5 @@
+export const runtime = 'nodejs'
+
 import { changeAttendanceType } from '@/actions/attendance';
 import { updateSubscription } from '@/actions/stripe';
 import { stripe } from '@/lib/stripe';

@@ -17,52 +17,52 @@ const SubscriptionModal =  ({ user }: Props) => {
     const stripe = useStripe()
     const elements = useElements()
     const [loading, setLoading] = useState(false)
+    const [open, setOpen] = useState(false)
 
-    const handleConfirm = async ()=>{
-       try {
-           setLoading(true)
-           if (!stripe || !elements) {
-               return toast.error("Stripe is not Initialzed")
-           }
-        //  you will create an intent and based on that intent 
-        // you will accept the payment 
-           const intent = await onGetStripeClientSecret(user.email, user.id)
+    const handleConfirm = async () => {
+        try {
+            setLoading(true)
+            if (!stripe || !elements) {
+                return toast.error("Stripe is not Initialized")
+            }
+            const intent = await onGetStripeClientSecret(user.email, user.id)
 
-           if(!intent?.secret){
-            throw new Error("Failed to initialze payment")
-           }
+            if (!intent?.secret) {
+                throw new Error("Failed to initialize payment")
+            }
 
-           const cardElement = elements.getElement(CardElement)
+            const cardElement = elements.getElement(CardElement)
 
-           if(!cardElement){
-            throw new Error("Card element not found")
-           }
+            if (!cardElement) {
+                throw new Error("Card element not found")
+            }
 
-           const { error, paymentIntent } = await stripe.confirmCardPayment(
-               intent.secret,
-               {
-                   payment_method: {
-                       card: cardElement,
-                   },
-               }
-           )
+            const { error, paymentIntent } = await stripe.confirmCardPayment(
+                intent.secret,
+                {
+                    payment_method: {
+                        card: cardElement,
+                    },
+                }
+            )
 
-           if (error) {
-               throw new Error(error.message)
-           }
-           console.log("Payment successful", paymentIntent)
-           router.refresh()
+            if (error) {
+                throw new Error(error.message)
+            }
 
-       }catch (error) {
-        console.log("SUBSCRIPTION --->",error)
-        toast.error("Failed to update Subscription")
-       }finally{
-        setLoading(false)
-       }
+            toast.success("Subscription activated!")
+            setOpen(false)  // close dialog
+            router.refresh()
+
+        } catch (error) {
+            console.log("SUBSCRIPTION --->", error)
+            toast.error("Failed to update Subscription")
+        } finally {
+            setLoading(false)
+        }
     }
-
     return (
-        <Dialog>
+        <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
                 <button className="rounded-xl flex gap-2 items-center hover:cursor-pointer px-4 py-2 border border-border bg-primary/10 backdrop-blur-sm text-sm font-normal text-primary hover:bg-primary-20">
                     <PlusIcon />
