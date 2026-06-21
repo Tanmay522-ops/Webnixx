@@ -22,7 +22,7 @@ The platform allows hosts to:
 
 🔹 Deploy AI Sales Reps.
 
-Human-like voice AI agents (powered by Vapi AI) can:
+Human-like voice AI agents can:
 
 Speak to customers
 Book meetings.
@@ -37,7 +37,7 @@ AI agents filter leads, encourage sales, and push them through the pipeline
 "Book a Call" → AI-led qualification sessions
 
 🔹 Production-Grade Streaming
-Integration with OBS and Stream (GetStream.io)
+Integration with OBS and Stream,
 Scalable, high-quality broadcasting for thousands of viewers.
 
 📸 Screenshots
